@@ -1,0 +1,13 @@
+{
+  "vertical_name": "Wedding Photographers",
+  "vertical_slug": "wedding_photography",
+  "fee_taxonomy": ["base_coverage", "additional_event_coverage", "videography", "drone_coverage", "cinematic_film", "highlight_reel", "albums", "travel", "accommodation", "taxes", "deposit", "overtime_rate_per_hour"],
+  "red_flag_rules": [
+    { "rule": "quote_below_market_threshold", "threshold_pct": 30, "message": "Suspiciously Low - Verify scope and hidden charges" },
+    { "rule": "requested_event_missing", "message": "Incomplete Coverage - Requested event is not included" },
+    { "rule": "non_binding", "message": "Non-Binding Risk - Final price may change" },
+    { "rule": "missing_overtime_rate", "message": "Overtime Cost Unknown" },
+    { "rule": "refused_itemization", "message": "Opaque Pricing - Avoid" }
+  ],
+  "negotiation_levers": ["competing_bid", "price_match", "complimentary_engagement_shoot", "complimentary_album", "drone_fee_waiver", "binding_total_request"]
+}
