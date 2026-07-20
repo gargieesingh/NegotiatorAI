@@ -8,5 +8,7 @@ export const demoVendorRoles = [
 ] as const;
 
 export const jobSpecStorageKey = 'negotiator_wedding_photo_job_spec';
+export const generalJobStorageKey = 'negotiator_general_job';
+export const generalVendorsStorageKey = 'negotiator_general_vendors';
 export const quotesStorageKey = 'negotiator_wedding_photo_quotes';
 export const negotiationStorageKey = 'negotiator_wedding_photo_negotiation';

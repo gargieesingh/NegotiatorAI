@@ -28,6 +28,7 @@ export interface WeddingPhotoJobSpec {
 }
 
 export type JobSpec = WeddingPhotoJobSpec;
+export type CallJobSpec = JobSpec | import('@/lib/verticals').GeneralJobSpec;
 export type CompanyStyle = 'premium_negotiable' | 'lowball_upseller' | 'transparent_fair';
 export type CallOutcome = 'quote_received' | 'callback_commitment' | 'documented_decline';
 
@@ -102,7 +103,7 @@ export interface ConversationState {
   id: string;
   vendor: DemoVendorParticipant;
   status: 'initiated' | 'calling' | 'complete' | 'declined' | 'error';
-  job_spec: JobSpec;
+  job_spec: CallJobSpec;
   mode: 'quote' | 'negotiate';
   leverage?: { company_name: string; amount: number; binding: boolean };
   started_at: string;
