@@ -1,5 +1,5 @@
 import { ElevenLabsClient } from 'elevenlabs';
-import type { ConversationState, DemoVendorParticipant, JobSpec } from '@/lib/types';
+import type { CallJobSpec, ConversationState, DemoVendorParticipant } from '@/lib/types';
 
 function required(name: string): string {
   const value = process.env[name];
@@ -9,7 +9,7 @@ function required(name: string): string {
 
 export async function placeHumanDemoCall(
   vendor: DemoVendorParticipant,
-  jobSpec: JobSpec,
+  jobSpec: CallJobSpec,
   callId: string,
   mode: ConversationState['mode'],
   leverage?: ConversationState['leverage'],
@@ -24,7 +24,10 @@ export async function placeHumanDemoCall(
     conversation_initiation_client_data: {
       dynamic_variables: {
         negotiator_call_id: callId,
+        vendor_name: vendor.vendor_name,
         wedding_brief: JSON.stringify(jobSpec),
+        confirmed_job_spec: JSON.stringify(jobSpec),
+        vertical_config: 'config' in jobSpec ? JSON.stringify(jobSpec.config) : 'Use the approved wedding-photography configuration.',
         call_mode: mode,
         competing_quote: leverage ? JSON.stringify(leverage) : 'No competing quote is available for this initial quote-gathering call.',
       },

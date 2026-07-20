@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCall, updateCall } from '@/lib/callStore';
 import type { ConversationTurn, Quote, WeddingPhotoQuoteDetails } from '@/lib/types';
+import { normalizeGenericQuote } from '@/lib/genericQuote';
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -97,7 +98,9 @@ export async function POST(request: NextRequest) {
     if (!call) return NextResponse.json({ received: true, matched: false });
 
     const transcript = transcriptTurns(data.transcript);
-    const quote = quoteFromAnalysis(call.id, call.vendor.vendor_name, record(data.analysis), transcript);
+    const quote = 'config' in call.job_spec
+      ? await normalizeGenericQuote(call.id, call.vendor.vendor_name, call.job_spec, transcript)
+      : quoteFromAnalysis(call.id, call.vendor.vendor_name, record(data.analysis), transcript);
     quote.company_style = call.vendor.vendor_style;
     const status = quote.outcome === 'documented_decline' ? 'declined' : 'complete';
     updateCall(call.id, { status, quote, transcript, completed_at: new Date().toISOString() });
