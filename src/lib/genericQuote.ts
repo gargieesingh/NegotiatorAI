@@ -1,6 +1,6 @@
-import OpenAI from 'openai';
 import type { ConversationTurn, Quote } from '@/lib/types';
 import type { GeneralJobSpec } from '@/lib/verticals';
+import { cerebrasClient, cerebrasModel, hasCerebras } from '@/lib/cerebras';
 
 const quoteSchema = {
   type: 'object', additionalProperties: false, required: ['outcome', 'line_items', 'binding', 'valid_until', 'included_services', 'excluded_services', 'red_flags'],
@@ -15,18 +15,24 @@ const quoteSchema = {
 export async function normalizeGenericQuote(callId: string, companyName: string, job: GeneralJobSpec, transcript: ConversationTurn[]): Promise<Quote> {
   const allowedKeys = job.config.quoteLineItems.map((item) => item.key);
   let normalized: { outcome: Quote['outcome']; line_items: Array<{ key: string; amount: number; evidence_turn: number }>; binding: boolean; valid_until: string; included_services: string[]; excluded_services: string[]; red_flags: string[] };
-  if (process.env.OPENAI_API_KEY) {
-    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    const response = await client.responses.create({
-      model: process.env.OPENAI_VERTICAL_MODEL || 'gpt-5-mini',
-      input: `Normalize this vendor call into an evidence-backed quote. Use only amounts explicitly stated in the transcript. Use only these line-item keys: ${JSON.stringify(allowedKeys)}. For each line item, evidence_turn must be the zero-based transcript index that proves it. Do not infer an amount.\n\nCONFIRMED JOB: ${JSON.stringify(job.data)}\n\nTRANSCRIPT: ${JSON.stringify(transcript.map((turn, index) => ({ index, speaker: turn.speaker, text: turn.text })))} `,
-      text: { format: { type: 'json_schema', name: 'normalized_quote', strict: true, schema: quoteSchema } },
+  if (hasCerebras()) {
+    const response = await cerebrasClient().chat.completions.create({
+      model: cerebrasModel(),
+      max_tokens: 1400,
+      reasoning_effort: 'low',
+      messages: [
+        { role: 'developer', content: 'Return only a JSON object matching the supplied schema. Never infer an amount or add a fact that is not explicitly present in the transcript.' },
+        { role: 'user', content: `Normalize this vendor call into an evidence-backed quote. Use only amounts explicitly stated in the transcript. Use only these line-item keys: ${JSON.stringify(allowedKeys)}. For each line item, evidence_turn must be the zero-based transcript index that proves it.\n\nCONFIRMED JOB: ${JSON.stringify(job.data)}\n\nTRANSCRIPT: ${JSON.stringify(transcript.map((turn, index) => ({ index, speaker: turn.speaker, text: turn.text })))} ` },
+      ],
+      response_format: { type: 'json_schema', json_schema: { name: 'normalized_quote', strict: true, schema: quoteSchema } },
     });
-    normalized = JSON.parse(response.output_text);
+    const content = response.choices[0]?.message.content;
+    if (!content) throw new Error('Cerebras returned no structured quote content.');
+    normalized = JSON.parse(content);
   } else {
     const totalMatch = transcript.map((turn) => turn.text).join(' ').match(/(?:all[- ]?in|total|estimate)\D{0,30}\$?([\d,]+(?:\.\d{1,2})?)/i);
     const total = totalMatch ? Number(totalMatch[1].replace(/,/g, '')) : 0;
-    normalized = { outcome: total ? 'quote_received' : 'callback_commitment', line_items: total ? [{ key: 'total', amount: total, evidence_turn: 0 }] : [], binding: false, valid_until: '', included_services: [], excluded_services: [], red_flags: ['Structured OpenAI quote normalization is not configured; review the transcript before relying on this result.'] };
+    normalized = { outcome: total ? 'quote_received' : 'callback_commitment', line_items: total ? [{ key: 'total', amount: total, evidence_turn: 0 }] : [], binding: false, valid_until: '', included_services: [], excluded_services: [], red_flags: ['Structured Cerebras quote normalization is not configured; review the transcript before relying on this result.'] };
   }
   const safeItems = normalized.line_items.filter((item) => allowedKeys.includes(item.key) && Number.isFinite(item.amount) && item.evidence_turn >= 0 && item.evidence_turn < transcript.length);
   const amount = (key: string) => safeItems.find((item) => item.key === key)?.amount ?? 0;

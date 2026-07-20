@@ -1,4 +1,3 @@
-import OpenAI from 'openai';
 import { execFile } from 'child_process';
 import { writeFile, unlink } from 'fs/promises';
 import { tmpdir } from 'os';
@@ -7,6 +6,7 @@ import { promisify } from 'util';
 import { NextRequest, NextResponse } from 'next/server';
 import { recognize } from 'tesseract.js';
 import type { VerticalConfig } from '@/lib/verticals';
+import { cerebrasClient, cerebrasModel, hasCerebras } from '@/lib/cerebras';
 
 const execFileAsync = promisify(execFile);
 const extractedSchema = { type: 'object', additionalProperties: false, required: ['values'], properties: { values: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['key', 'value'], properties: { key: { type: 'string' }, value: { type: 'string' } } } } } };
@@ -36,20 +36,24 @@ export async function POST(request: NextRequest) {
       sourceText = (JSON.parse(stdout) as { text?: string }).text ?? '';
     } else sourceText = (await recognize(bytes, 'eng')).data.text;
     const values: Record<string, string | number | boolean> = {};
-    if (process.env.OPENAI_API_KEY && sourceText) {
-      const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-      const response = await client.responses.create({
-        model: process.env.OPENAI_VERTICAL_MODEL || 'gpt-5-mini',
-        input: `Extract only facts explicitly present in this document into the configured job fields. Return values as strings. Omit a key if it is not present. Do not infer.\n\nCONFIGURED FIELDS: ${JSON.stringify(config.intakeFields)}\n\nDOCUMENT TEXT:\n${sourceText.slice(0, 12000)}`,
-        text: { format: { type: 'json_schema', name: 'document_job_spec', strict: true, schema: extractedSchema } },
+    if (hasCerebras() && sourceText) {
+      const response = await cerebrasClient().chat.completions.create({
+        model: cerebrasModel(), max_tokens: 1400, reasoning_effort: 'low',
+        messages: [
+          { role: 'developer', content: 'Return only a JSON object matching the supplied schema. Extract only literal facts; omit fields not present and never infer.' },
+          { role: 'user', content: `Extract only facts explicitly present in this document into the configured job fields. Return values as strings. Omit a key if it is not present. Do not infer.\n\nCONFIGURED FIELDS: ${JSON.stringify(config.intakeFields)}\n\nDOCUMENT TEXT:\n${sourceText.slice(0, 12000)}` },
+        ],
+        response_format: { type: 'json_schema', json_schema: { name: 'document_job_spec', strict: true, schema: extractedSchema } },
       });
-      const extracted = JSON.parse(response.output_text) as { values: Array<{ key: string; value: string }> };
+      const content = response.choices[0]?.message.content;
+      if (!content) throw new Error('Cerebras returned no document extraction.');
+      const extracted = JSON.parse(content) as { values: Array<{ key: string; value: string }> };
       for (const item of extracted.values) {
         const field = config.intakeFields.find((candidate) => candidate.key === item.key);
         if (field && item.value.trim()) values[field.key] = coerce(item.value, field.type);
       }
     }
-    return NextResponse.json({ values, source_text: sourceText.slice(0, 2000), source: process.env.OPENAI_API_KEY ? 'openai' : 'text_extracted_only' });
+    return NextResponse.json({ values, source_text: sourceText.slice(0, 2000), source: hasCerebras() ? 'cerebras' : 'text_extracted_only' });
   } catch (error) {
     console.error('Generic document normalization failed', error);
     return NextResponse.json({ error: error instanceof Error ? error.message : 'Could not parse this document.' }, { status: 422 });
