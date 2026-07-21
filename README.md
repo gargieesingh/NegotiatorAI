@@ -1,46 +1,76 @@
 # Negotiator AI
+<img width="1324" height="493" alt="image" src="https://github.com/user-attachments/assets/514abc98-fdae-49ba-a3e5-cf9b35ef11f9" />
 
-> **Autonomous AI Procurement & Price Negotiation Agent** — Built for the OpenAI Hackathon.
+
+> **Autonomous AI Procurement & Price Negotiation Agent** Built for the OpenAI Hackathon.
 >
 > Negotiator AI delegates your vendor outreach, price comparisons, and rate negotiations to AI. Describe your service scope or attach a quote; our autonomous agent discovers local service providers via Google Places, places real conversational phone calls with ElevenLabs AI, extracts itemized pricing, and negotiates binding deals using AI leverage strategies.
 
 ---
 
-## 🌟 Elevator Pitch (Devpost)
+## The problem
 
-**Negotiator AI is an autonomous agent that discovers local vendors, places live conversational phone calls, extracts itemized quotes, and negotiates binding price discounts using AI leverage strategies.**
+Getting a fair price should not require becoming a part-time procurement specialist. Yet hiring a contractor, buying a laptop, planning a wedding, or sourcing a business service often means chasing vendors, repeating the same brief, comparing vague totals, and hoping the lowest number does not hide the most expensive surprise.
 
----
+**Negotiator AI is a voice-first procurement agent that turns that messy process into one auditable workflow:** discover relevant local businesses, call approved contacts, turn spoken answers into comparable quotes, and use verified pricing as negotiation leverage.
 
-## 📖 Project Story
+## What we built
 
-### 💡 Inspiration
-Negotiating prices for home repairs, contractors, wedding vendors, caterers, or commercial services is tedious and time-consuming. Consumers and business owners waste hours making manual phone calls, dealing with hidden fees, and struggling to negotiate fair rates. We wanted to build an autonomous agent that acts as a 24/7 personal procurement officer—handling everything from vendor discovery to live phone negotiation and executive audit reporting.
+A user can describe a need by voice or upload an existing quote, invoice, PDF, or PNG. Negotiator AI then:
 
-### 🤖 What it Does
-1. **Voice & Document Briefing**: Users state what they need using a real-time conversational voice assistant (ElevenLabs) or by uploading an existing quote/invoice (PDF/PNG).
-2. **AI Vertical Classification & Normalization**: The agent automatically classifies the job type, extracts scope parameters, and generates vertical-specific quote line-item rules using fast AI models (GPT-5.6 / Cerebras / Claude).
-3. **Real Market Discovery**: Queries the Google Places API to discover verified local service providers with ratings, locations, and contact info.
-4. **Autonomous Outbound AI Calls**: Initiates real outbound phone calls to vendors using ElevenLabs Conversational Voice AI and Twilio telephony integration.
-5. **Itemized Quote & Metric Extraction**: Webhooks process post-call audio transcripts, extracting itemized line items (base fee, taxes, mandatory add-ons, binding terms, red flags) with strict transcript turn citations (Zero Invented Data Policy).
-6. **AI Leverage Negotiation**: Formulates non-hallucinating price-match negotiation strategies using verified benchmark quotes against target vendors.
-7. **Executive Audit & Evidence Report**: Produces a cryptographically hashed audit report containing line-item comparison tables, savings breakdowns, and top recommendations.
+1. **Builds one locked brief** - captures the requirements that every vendor should receive so the comparison stays fair.
+2. **Discovers local options** - searches Google Places for nearby businesses, including address, rating, maps link, and business phone data.
+3. **Runs live outbound conversations** - uses ElevenLabs Conversational AI and Twilio to contact approved, consented demo participants for a real phone-call experience.
+4. **Tracks real call outcomes** - distinguishes calling, processing a completed call, no answer, a documented decline, and a quote received.
+5. **Creates evidence-backed quote records** - extracts only amounts explicitly spoken in the transcript, flags missing terms, and keeps the transcript beside the resulting quote.
+6. **Finds negotiation leverage** - selects the lowest comparable verified quote and uses it to request a price match or measurable added value from the higher-priced vendor.
+7. **Produces an executive comparison** - presents line items, totals, terms, red flags, and savings in one decision-ready report.
 
-### 🛠️ How We Built It
-- **Frontend & Design System**: Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS v4, styled after the **NeuraTalk Design Language** (clean Satoshi/Inter typography, soft white cards, sleek micro-animations).
-- **Voice & Telephony**: ElevenLabs Conversational Voice AI (WebRTC & Outbound Telephony API) + Twilio Webhooks.
-- **Vendor Discovery**: Google Places API (New Text Search & Details API).
-- **AI Intelligence & Orchestration**: OpenAI GPT-5.6 / Codex / Cerebras AI for classification, quote normalization, and strategy calculation; Claude for executive report generation.
+For the live demo, calls are deliberately limited to three verified, consented participants. That keeps the experience safe and testable while showing the same orchestration pattern a production, user-approved vendor-calling workflow would use.
 
-### 🧠 How Codex & GPT-5.6 Were Used
-- **Intake Normalization & Intent Classification**: GPT-5.6 / Codex models classify incoming voice & text briefs into structured JSON schemas and map user intent into vertical configurations.
-- **Non-Hallucinating Leverage Strategy**: Used GPT-5.6 to compute price match leverage by selecting the lowest verified binding quote as leverage against target vendors, strictly citing transcript evidence.
-- **Code Generation & Architecture**: OpenAI Codex was used extensively throughout development to scaffold Next.js App Router API endpoints, write TypeScript type definitions, and implement real-time WebRTC audio visualizer hooks.
+## Why Codex and GPT-5.6 mattered
 
-### 🚧 Challenges We Faced
-- **Real-Time WebRTC In-Place Voice UI**: Transforming standard text prompts into full-screen fluid voice assistant interfaces (similar to Gemini Live / ChatGPT Advanced Voice) without breaking React state cycles.
-- **Verifiable Price Extraction**: Ensuring the AI extracts only explicit numerical prices mentioned in call transcripts while flagging non-binding quotes or missing terms.
-- **Post-Call Telephony Status Synchronization**: Reconciling Twilio call status callbacks with ElevenLabs post-call transcript webhooks to provide real-time UI card updates.
+Codex was not a one-time autocomplete tool for this project. It was the engineering partner that let us turn a deceptively simple idea - “call multiple vendors and compare prices” - into a real, failure-aware system.
+
+Using Codex with GPT-5.6, we designed and implemented:
+
+- the Next.js App Router API surface for discovery, call initiation, call status, webhooks, negotiation, and reporting;
+- the TypeScript domain model that preserves a locked job brief, call state, transcript, quote, leverage, and audit output;
+- the event-driven call lifecycle that reconciles Twilio telephony state with ElevenLabs post-call transcripts;
+- durable cross-instance call storage for serverless deployment, so a webhook can update the same call that initiated in a different function instance;
+- guardrails that prevent invented prices: quotes only use values stated in the source transcript, and incomplete calls remain declines rather than fabricated estimates;
+- the responsive six-vendor discovery and three-call experience, including explicit **Not picked up** and **Processing quote** states.
+
+GPT-5.6 was especially valuable for reasoning across these connected constraints: asynchronous webhooks, serverless persistence, telephony failure states, and a UI that must remain honest when a vendor does not answer or a transcript is delayed. Codex accelerated implementation, but every workflow was reviewed, tested, and shaped around the real system behavior.
+
+## How we built it
+
+- **Product and frontend:** Next.js 16, React 19, TypeScript, Tailwind CSS
+- **Voice and telephony:** ElevenLabs Conversational AI and Twilio outbound calling
+- **Discovery:** Google Places API (New Text Search)
+- **Quote intelligence:** structured transcript normalization with evidence constraints
+- **Reporting:** GPT 5.6-generated executive report from the collected quote and negotiation data
+- **Reliability:** Redis-compatible durable state for webhooks and serverless status polling
+
+## The hard parts
+
+### Voice calls do not end when the UI thinks they do
+
+A phone can ring forever, go unanswered, be cut short, or finish while its transcript is still being processed. We had to model those states separately. The interface now stops pretending every call is active: Twilio status reconciliation surfaces **Not picked up** and **Processing quote**, while the transcript webhook supplies the final evidence.
+
+### “A price” is not a comparable quote
+
+A vendor saying one number is not enough. We needed scope, fees, validity, binding terms, and exclusions. The system treats absent details as absent details. It does not fill the gap with an AI guess.
+
+### Serverless webhooks need durable memory
+
+An outbound call can begin in one Vercel function and finish in another. In-memory state loses that connection. We added durable call records keyed by the internal call ID and provider conversation identifiers so callbacks can recover the right quote workflow.
+
+## What we learned
+
+The most exciting lesson was that useful agents are not just chat interfaces with a phone number. They need a trustworthy state machine, evidence boundaries, graceful failure handling, and a product experience that explains uncertainty instead of hiding it.
+
+Negotiator AI is our answer to a practical question: **what if everyone had a procurement officer that could do the calling, keep the receipts, and still let the human make the final decision?**
 
 ---
 
@@ -121,8 +151,7 @@ flowchart TD
    ELEVENLABS_NEGOTIATOR_AGENT_ID=your_negotiator_agent_id
    ELEVENLABS_OUTBOUND_PHONE_NUMBER_ID=your_phone_number_id
    GOOGLE_PLACES_API_KEY=your_google_places_api_key
-   CEREBRAS_API_KEY=your_cerebras_api_key
-   ANTHROPIC_API_KEY=your_anthropic_api_key
+   OPENAI_API_KEY=your_openai_api_key
    ```
 
 3. **Run Development Server**:
@@ -147,5 +176,5 @@ flowchart TD
 ---
 
 ## 🛡️ License & Disclaimers
-- Verified phone calls placed during demos use consented test numbers (`+919335845905`, `+917004403310`, `+919955059125`).
+- Verified phone calls placed during demos use consented test numbers.
 - Quotes and estimates generated by Negotiator AI are based on transcript data and should be verified directly with vendors before signing binding contracts.
