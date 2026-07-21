@@ -12,12 +12,13 @@ export async function POST(request: NextRequest) {
     // Persist before asking ElevenLabs to dial. A fast participant can finish before
     // the outbound-call API responds, and its post-call webhook must find this record.
     const state: ConversationState = { id: callId, vendor: body.vendor, status: 'calling', job_spec: body.job_spec, mode: body.mode, leverage: body.leverage, started_at: new Date().toISOString() };
-    saveCall(state);
+    await saveCall(state);
     try {
-      const callSid = await placeHumanDemoCall(body.vendor, body.job_spec, callId, body.mode, body.leverage);
-      return NextResponse.json({ conversation_id: callId, call_sid: callSid, status: state.status, vendor_name: body.vendor.vendor_name, spec_hash: body.job_spec.spec_hash });
+      const providerCall = await placeHumanDemoCall(body.vendor, body.job_spec, callId, body.mode, body.leverage);
+      await updateCall(callId, { call_sid: providerCall.callSid, elevenlabs_conversation_id: providerCall.conversationId });
+      return NextResponse.json({ conversation_id: callId, call_sid: providerCall.callSid, elevenlabs_conversation_id: providerCall.conversationId, status: state.status, vendor_name: body.vendor.vendor_name, spec_hash: body.job_spec.spec_hash });
     } catch (error) {
-      updateCall(callId, { status: 'error', error: error instanceof Error ? error.message : 'Failed to initiate live call' });
+      await updateCall(callId, { status: 'error', error: error instanceof Error ? error.message : 'Failed to initiate live call' });
       throw error;
     }
   } catch (error) {

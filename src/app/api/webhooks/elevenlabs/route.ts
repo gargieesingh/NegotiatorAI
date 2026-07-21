@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCall, updateCall } from '@/lib/callStore';
+import { getCall, getCallByProviderId, updateCall } from '@/lib/callStore';
 import type { ConversationTurn, Quote, WeddingPhotoQuoteDetails } from '@/lib/types';
 import { normalizeGenericQuote } from '@/lib/genericQuote';
 
@@ -89,21 +89,37 @@ function quoteFromAnalysis(callId: string, companyName: string, analysis: Unknow
 export async function POST(request: NextRequest) {
   try {
     const event = await request.json() as UnknownRecord;
-    if (event.type !== 'post_call_transcription') return NextResponse.json({ received: true });
     const data = record(event.data);
     const initiation = record(data.conversation_initiation_client_data);
     const variables = record(initiation.dynamic_variables);
     const callId = typeof variables.negotiator_call_id === 'string' ? variables.negotiator_call_id : '';
-    const call = callId ? getCall(callId) : undefined;
+    const metadata = record(data.metadata);
+    const metadataBody = record(metadata.body);
+    const providerId = String(data.conversation_id ?? metadataBody.CallSid ?? metadataBody.call_sid ?? '');
+    const call = (callId ? await getCall(callId) : undefined) ?? await getCallByProviderId(providerId);
     if (!call) return NextResponse.json({ received: true, matched: false });
+
+    if (event.type === 'call_initiation_failure') {
+      const reason = String(data.failure_reason ?? 'unknown');
+      const noAnswer = reason === 'no-answer' || reason === 'busy';
+      await updateCall(call.id, {
+        status: noAnswer ? 'no_answer' : 'error',
+        error: noAnswer ? `Call was not picked up (${reason}).` : `Call could not be initiated (${reason}).`,
+        completed_at: new Date().toISOString(),
+      });
+      return NextResponse.json({ received: true, matched: true });
+    }
+
+    if (event.type !== 'post_call_transcription') return NextResponse.json({ received: true });
 
     const transcript = transcriptTurns(data.transcript);
     const quote = 'config' in call.job_spec
       ? await normalizeGenericQuote(call.id, call.vendor.vendor_name, call.job_spec, transcript)
       : quoteFromAnalysis(call.id, call.vendor.vendor_name, record(data.analysis), transcript);
     quote.company_style = call.vendor.vendor_style;
-    const status = quote.outcome === 'documented_decline' ? 'declined' : 'complete';
-    updateCall(call.id, { status, quote, transcript, completed_at: new Date().toISOString() });
+    const hasPrice = (quote.quote?.total ?? quote.final_price) > 0;
+    const status = quote.outcome === 'documented_decline' || !hasPrice ? 'declined' : 'complete';
+    await updateCall(call.id, { status, quote, transcript, completed_at: new Date().toISOString() });
     return NextResponse.json({ received: true, matched: true });
   } catch (error) {
     console.error('ElevenLabs webhook processing failed', error);

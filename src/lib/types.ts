@@ -102,7 +102,7 @@ export interface NegotiationResult {
 export interface ConversationState {
   id: string;
   vendor: DemoVendorParticipant;
-  status: 'initiated' | 'calling' | 'complete' | 'declined' | 'error';
+  status: 'initiated' | 'calling' | 'processing' | 'complete' | 'declined' | 'no_answer' | 'error';
   job_spec: CallJobSpec;
   mode: 'quote' | 'negotiate';
   leverage?: { company_name: string; amount: number; binding: boolean };
@@ -111,6 +111,8 @@ export interface ConversationState {
   quote?: Quote;
   transcript?: ConversationTurn[];
   error?: string;
+  call_sid?: string;
+  elevenlabs_conversation_id?: string;
 }
 
 export interface RankedQuote extends Quote { rank: number; recommended: boolean; rank_reasoning: string; }

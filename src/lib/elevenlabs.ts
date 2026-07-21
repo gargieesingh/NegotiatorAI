@@ -13,7 +13,7 @@ export async function placeHumanDemoCall(
   callId: string,
   mode: ConversationState['mode'],
   leverage?: ConversationState['leverage'],
-): Promise<string> {
+): Promise<{ callSid: string; conversationId?: string }> {
   if (!vendor.consent_recording) throw new Error('Recording consent is required before placing a demo call.');
   if (!vendor.phone_number) throw new Error(`A phone number is required for ${vendor.vendor_name}.`);
   const client = new ElevenLabsClient({ apiKey: required('ELEVENLABS_API_KEY') });
@@ -34,5 +34,6 @@ export async function placeHumanDemoCall(
     },
   });
   if (!response.success || !response.callSid) throw new Error(response.message || 'ElevenLabs did not return an outbound call identifier.');
-  return response.callSid;
+  const withConversationId = response as typeof response & { conversation_id?: string; conversationId?: string };
+  return { callSid: response.callSid, conversationId: withConversationId.conversation_id ?? withConversationId.conversationId };
 }
