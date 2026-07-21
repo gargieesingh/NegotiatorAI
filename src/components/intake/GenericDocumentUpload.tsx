@@ -19,7 +19,7 @@ export function GenericDocumentUpload({ config, onSpecReceived }: GenericDocumen
       const response = await fetch('/api/intake/normalize-generic-document', { method: 'POST', body: form });
       const body = await response.json() as { values?: Record<string, string | number | boolean>; error?: string; source?: string };
       if (!response.ok) throw new Error(body.error ?? 'Could not parse the document.');
-      if (body.source !== 'cerebras') toast.message('Text was extracted. Add CEREBRAS_API_KEY to map document details into this custom vertical automatically.');
+      if (body.source !== 'gemini') toast.message('Text was extracted. Add GEMINI_API_KEY to map document details into this custom vertical automatically.');
       if (body.values && Object.keys(body.values).length) { onSpecReceived(body.values); toast.success('Document details added to your confirmation brief.'); }
       else toast.message('No confirmed fields were found. Review and complete the brief manually.');
     } catch (error) { toast.error(error instanceof Error ? error.message : 'Could not parse the document.'); }

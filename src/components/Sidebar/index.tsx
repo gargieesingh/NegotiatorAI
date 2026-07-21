@@ -94,7 +94,7 @@ const Sidebar = ({ visible, onClose, onClickNewChat }: Props) => {
                             Powered by
                         </p>
                         <div className="flex flex-wrap gap-1.5">
-                            {["Cerebras AI", "ElevenLabs", "Google Places", "Claude"].map((name) => (
+                            {["Gemini 2.5 Flash", "ElevenLabs", "Google Places", "Claude"].map((name) => (
                                 <span
                                     key={name}
                                     className="inline-flex items-center px-2 py-0.5 rounded-full bg-white-0 border border-stroke-soft-200 text-[10px] font-semibold text-sub-600"

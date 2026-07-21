@@ -101,11 +101,11 @@ function AgentRunContent() {
     const runPipeline = async () => {
         try {
             // ──────────────────────────────────────────────────
-            // STEP 1: CLASSIFY via Cerebras AI
+            // STEP 1: CLASSIFY via Gemini
             // ──────────────────────────────────────────────────
             setCurrentStep("classify");
             addLog("SYS", `Initializing pipeline for: "${promptParam}"`);
-            addLog("AI", "Calling Cerebras AI to classify service vertical and generate intake schema...");
+            addLog("AI", "Calling Gemini 2.5 Flash to classify service vertical and generate intake schema...");
 
             let config: VerticalConfig | null = null;
             let confidence = 0.5;
@@ -120,7 +120,7 @@ function AgentRunContent() {
                 if (classRes.ok && classData.config) {
                     config = classData.config as VerticalConfig;
                     confidence = classData.confidence ?? 0.9;
-                    addLog("AI", `[Cerebras] Vertical: "${config.displayName}" — confidence ${Math.round(confidence * 100)}% (source: ${classData.source})`);
+                    addLog("AI", `[Gemini] Vertical: "${config.displayName}" — confidence ${Math.round(confidence * 100)}% (source: ${classData.source})`);
                 } else {
                     addLog("AI", `Classify API: ${classData.error || "Using general procurement config"}`);
                 }
@@ -367,7 +367,7 @@ function AgentRunContent() {
 
             setQuotes(polledQuotes);
             localStorage.setItem(quotesStorageKey, JSON.stringify(polledQuotes));
-            addLog("AI", `[Cerebras] Normalized ${polledQuotes.length} call transcripts into structured quotes`);
+            addLog("AI", `[Gemini] Normalized ${polledQuotes.length} call transcripts into structured quotes`);
 
             await new Promise(r => setTimeout(r, 1500));
 
@@ -533,11 +533,11 @@ function AgentRunContent() {
     };
 
     const stepDef: Array<{ key: Step; label: string; shortLabel: string; icon: React.ReactNode; desc: string }> = [
-        { key: "classify",   label: "Classify",  shortLabel: "Classify",  icon: <Sparkles className="size-4" />,    desc: "Cerebras AI" },
+        { key: "classify",   label: "Classify",  shortLabel: "Classify",  icon: <Sparkles className="size-4" />,    desc: "Gemini 2.5 Flash" },
         { key: "brief",      label: "Brief",     shortLabel: "Brief",     icon: <CheckCircle2 className="size-4" />, desc: "Job spec" },
         { key: "discover",   label: "Discovery", shortLabel: "Discover",  icon: <Search className="size-4" />,       desc: "Google Places" },
         { key: "calling",    label: "Dialing",   shortLabel: "Dial",      icon: <PhoneCall className="size-4" />,    desc: "ElevenLabs" },
-        { key: "analyzing",  label: "Metrics",   shortLabel: "Metrics",   icon: <BarChart3 className="size-4" />,    desc: "Cerebras" },
+        { key: "analyzing",  label: "Metrics",   shortLabel: "Metrics",   icon: <BarChart3 className="size-4" />,    desc: "Gemini" },
         { key: "negotiating",label: "Leverage",  shortLabel: "Leverage",  icon: <TrendingDown className="size-4" />, desc: "Negotiate" },
         { key: "done",       label: "Done",      shortLabel: "Done",      icon: <CheckCircle2 className="size-4" />, desc: "Report" },
     ];
@@ -664,7 +664,7 @@ function AgentRunContent() {
                             </div>
                         </div>
                         <h3 className="text-base font-bold text-strong-950 mb-2 font-inter">
-                            {currentStep === "classify" ? "Classifying via Cerebras AI..." :
+                            {currentStep === "classify" ? "Classifying via Gemini 2.5 Flash..." :
                              currentStep === "brief" ? "Locking job brief..." :
                              currentStep === "discover" ? "Querying Google Places API for real vendors..." :
                              "Initialising pipeline..."}
