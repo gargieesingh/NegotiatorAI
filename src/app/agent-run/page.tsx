@@ -43,6 +43,7 @@ interface ActiveCall {
     transcript: ConversationTurn[];
     quote?: Quote;
     error?: string;
+    selectedForCall: boolean;
 }
 
 function parsePromptToHumanText(raw: string): string {
@@ -158,8 +159,8 @@ function AgentRunContent() {
             addLog("SYS", "Generating confirmed job brief spec...");
 
             // Extract location heuristically
-            const locMatch = promptParam.match(/\b(gorakhpur|lucknow|delhi|mumbai|bangalore|pune|hyderabad|chennai|kolkata|noida|gurgaon|new york|los angeles|chicago|houston|san francisco)\b/i);
-            const location = locMatch ? locMatch[1] : "Local City";
+            const locMatch = promptParam.match(/\b(gorakhpur|lucknow|delhi|mumbai|bangalore|pune|hyderabad|chennai|kolkata|noida|gurgaon|rohtak|new york|los angeles|chicago|houston|san francisco)\b/i);
+            const location = locMatch ? (locMatch[1].toLowerCase() === "rohtak" ? "Rohtak, Haryana" : locMatch[1]) : "Local City";
 
             const generalJobSpec: GeneralJobSpec = {
                 id: crypto.randomUUID(),
@@ -241,13 +242,15 @@ function AgentRunContent() {
             addLog("SYS", `Placing ${demoParticipants.length} outbound calls via ElevenLabs + Twilio...`);
 
             // Initialize UI cards
-            setActiveCalls(demoParticipants.map(p => ({
-                id: p.id,
-                vendorName: p.vendor_name,
-                phone: p.phone_number,
-                style: p.vendor_style,
+            setActiveCalls(realVendors.slice(0, 6).map((vendor, index) => ({
+                id: vendor.place_id,
+                vendorName: vendor.name,
+                phone: index < 3 ? demoParticipants[index].phone_number : vendor.phone_number || "",
+                style: styles[index % 3],
                 status: "initiated",
                 transcript: [],
+                selectedForCall: index < 3,
+                error: index < 3 ? undefined : "Discovered through Google Places. This business was not selected for the three demo calls.",
             })));
 
             const callIds: Array<{ callId: string; vendor: DemoVendorParticipant }> = [];
@@ -678,22 +681,25 @@ function AgentRunContent() {
 
                 {/* Vendor cards — uses the same CallCard as /calls */}
                 {activeCalls.length > 0 && (
-                    <div className={`grid gap-6 ${
-                        activeCalls.length === 1 ? "grid-cols-1 max-w-md" :
-                        activeCalls.length === 2 ? "grid-cols-2 max-md:grid-cols-1" :
-                        "lg:grid-cols-3 md:grid-cols-2 grid-cols-1"
-                    }`}>
-                        {activeCalls.map(call => (
-                            <CallCard
-                                key={call.id}
-                                companyName={call.vendorName}
-                                companyStyle={call.style as any}
-                                status={call.status === "initiated" ? "pending" : call.status}
-                                quote={call.quote}
-                                error={call.error}
-                            />
-                        ))}
-                    </div>
+                    <>
+                        <div className={`grid gap-6 ${
+                            activeCalls.length === 1 ? "grid-cols-1 max-w-md" :
+                            activeCalls.length === 2 ? "grid-cols-2 max-md:grid-cols-1" :
+                            "lg:grid-cols-3 md:grid-cols-2 grid-cols-1"
+                        }`}>
+                            {activeCalls.map(call => (
+                                <CallCard
+                                    key={call.id}
+                                    companyName={call.vendorName}
+                                    companyStyle={call.style as any}
+                                    status={call.status === "initiated" ? "pending" : call.status}
+                                    quote={call.quote}
+                                    error={call.error}
+                                    discoveredOnly={!call.selectedForCall}
+                                />
+                            ))}
+                        </div>
+                    </>
                 )}
             </div>
 

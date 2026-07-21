@@ -13,6 +13,7 @@ interface CallCardProps {
   status: CallCardStatus;
   quote?: Quote;
   error?: string;
+  discoveredOnly?: boolean;
 }
 
 const colors: Record<CallCardStatus, string> = {
@@ -31,7 +32,7 @@ const labels: Record<CallCardStatus, string> = {
   error: 'Setup required',
 };
 
-export function CallCard({ companyName, companyStyle, status, quote, error }: CallCardProps) {
+export function CallCard({ companyName, companyStyle, status, quote, error, discoveredOnly = false }: CallCardProps) {
   const [expanded, setExpanded] = useState(false);
   const calling = status === 'calling';
 
@@ -54,7 +55,7 @@ export function CallCard({ companyName, companyStyle, status, quote, error }: Ca
             : 'border-stroke-soft-200 bg-weak-50 text-sub-600'
         }`}>
           {calling && <span className="size-1.5 rounded-full bg-blue-600 animate-pulse" />}
-          {labels[status]}
+          {discoveredOnly ? 'Discovered' : labels[status]}
         </span>
       </header>
 
