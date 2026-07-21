@@ -13,26 +13,26 @@ const ImageGenerationPage = () => {
             <Chat>
                 <Question>generate images for a fantasy landscape</Question>
                 <Answer>
-                    <div className="flex flex-col gap-1.5">
+                    <div className="flex flex-col gap-3 text-sub-600">
                         <SoloImage />
-                        <div>
+                        <div className="text-strong-950 font-medium">
                             Here is the fantasy landscape you requested! Let me
                             know if you&apos;d like any adjustments or
                             additional details.
                         </div>
-                        <div>Anything else? I’m always here to help.</div>
+                        <div className="text-sub-600">Anything else? I’m always here to help.</div>
                     </div>
                 </Answer>
                 <Question>generate 3 images for a cartoon girl</Question>
                 <Answer>
-                    <div className="flex flex-col gap-1.5">
+                    <div className="flex flex-col gap-3 text-sub-600">
                         <Gallery />
-                        <div>
+                        <div className="text-strong-950 font-medium">
                             Here is the fantasy landscape you requested! Let me
                             know if you&apos;d like any adjustments or
                             additional details.
                         </div>
-                        <div>Anything else? I’m always here to help.</div>
+                        <div className="text-sub-600">Anything else? I’m always here to help.</div>
                     </div>
                 </Answer>
             </Chat>

@@ -19,8 +19,8 @@ const HistoryPage = () => {
             <Chat
                 hidePanelMessage
                 titleHead={
-                    <div className="flex items-center gap-2 text-label-sm">
-                        <Icon name="history" />
+                    <div className="flex items-center gap-2 text-label-sm text-strong-950">
+                        <Icon name="history" className="fill-strong-950" />
                         History
                     </div>
                 }
@@ -31,26 +31,26 @@ const HistoryPage = () => {
                             className="not-last:mb-6.5 max-md:not-last:mb-4"
                             key={item.id}
                         >
-                            <div className="mb-4 text-label-md text-sub-600 max-md:mb-2 max-md:text-label-sm">
+                            <div className="mb-4 text-label-md text-sub-600 font-medium max-md:mb-2 max-md:text-label-sm">
                                 {item.title}
                             </div>
-                            <div className="">
+                            <div className="flex flex-col">
                                 {item.items.map((item) => (
                                     <div
-                                        className="flex items-center gap-3 px-3.5 py-3 rounded-3xl bg-weak-50 not-last:mb-3 cursor-pointer max-md:items-start max-md:rounded-xl"
+                                        className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl bg-white-0 border border-stroke-soft-200 shadow-sm not-last:mb-3 cursor-pointer transition-colors hover:border-stroke-sub-300 max-md:items-start max-md:rounded-xl"
                                         key={item.id}
                                     >
-                                        <div className="flex justify-center items-center shrink-0 size-14.5 rounded-2xl bg-white-0 max-md:size-11 max-md:rounded-lg">
+                                        <div className="flex justify-center items-center shrink-0 size-12 rounded-xl bg-weak-50 border border-stroke-soft-200 max-md:size-10 max-md:rounded-lg">
                                             <Icon
-                                                className="!size-5.5 fill-icon-sub-600"
+                                                className="!size-5 fill-strong-950"
                                                 name={item.icon}
                                             />
                                         </div>
                                         <div className="grow">
-                                            <div className="mb-0.5 text-label-md max-md:text-label-sm">
+                                            <div className="mb-0.5 text-label-md text-strong-950 font-medium max-md:text-label-sm">
                                                 {item.title}
                                             </div>
-                                            <div className="text-soft-400">
+                                            <div className="text-sub-600 text-body-sm">
                                                 {item.description}
                                             </div>
                                         </div>

@@ -64,8 +64,8 @@ const GenerateCodePage = () => {
             <Chat>
                 <Question>generate html code for a contact form</Question>
                 <Answer>
-                    <div className="flex flex-col gap-1.5">
-                        <div>
+                    <div className="flex flex-col gap-3 text-sub-600">
+                        <div className="text-strong-950 font-medium">
                             Here’s a simple example of HTML code for a contact
                             form:
                         </div>
@@ -77,7 +77,7 @@ const GenerateCodePage = () => {
                             onGenerate={handleGenerateCode}
                             isGenerating={isGenerating}
                         />
-                        <div className="">
+                        <div className="text-sub-600">
                             This code creates a simple, styled contact form that
                             includes fields for a name, email, and message,
                             along with a &quot;Send Message&quot; button. You

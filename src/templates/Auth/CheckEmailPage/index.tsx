@@ -14,7 +14,7 @@ const CheckEmailPage = () => {
                 </>
             }
         >
-            <>
+            <div>
                 <Button
                     className="w-full !h-12 !rounded-xl"
                     isBlue
@@ -25,13 +25,13 @@ const CheckEmailPage = () => {
                 </Button>
                 <div className="mt-5 text-center">
                     <Link
-                        className="text-label-sm text-blue-500 transition-colors hover:text-blue-700"
+                        className="text-label-sm text-blue-500 font-medium transition-colors hover:text-blue-700"
                         href="/auth/sign-in"
                     >
                         Back to login page
                     </Link>
                 </div>
-            </>
+            </div>
         </LayoutLogin>
     );
 };

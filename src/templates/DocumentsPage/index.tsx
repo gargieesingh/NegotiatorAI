@@ -13,9 +13,9 @@ const DocumentsPage = () => {
             <Chat
                 hidePanelMessage
                 titleHead={
-                    <div className="flex items-center gap-2 text-label-sm">
+                    <div className="flex items-center gap-2 text-label-sm text-strong-950 font-medium">
                         Documents
-                        <div className="flex items-center h-5 px-1.5 border border-stroke-soft-200 rounded-sm text-label-xs text-sub-600">
+                        <div className="flex items-center h-5 px-1.5 border border-stroke-soft-200 rounded-sm text-label-xs text-sub-600 bg-weak-50">
                             20
                         </div>
                     </div>
@@ -31,14 +31,14 @@ const DocumentsPage = () => {
                                 <div className="text-label-md text-sub-600 max-md:text-label-sm">
                                     {item.title}
                                 </div>
-                                <div className="flex items-center h-5 px-1.5 border border-stroke-soft-200 rounded-sm text-label-xs text-sub-600">
+                                <div className="flex items-center h-5 px-1.5 border border-stroke-soft-200 rounded-sm text-label-xs text-sub-600 bg-weak-50">
                                     {item.counter}
                                 </div>
                             </div>
                             <div className="flex flex-wrap -mt-3 -mx-1.5">
                                 {item.items.map((item) => (
                                     <div
-                                        className="w-[calc(33.333%-0.75rem)] mt-3 mx-1.5 p-2 pb-4 bg-white-0 border border-stroke-soft-200 rounded-xl shadow-[0_0.375rem_0.75rem_0_rgba(0,0,0,0.06)] cursor-pointer transition-colors hover:border-strong-950 max-md:w-[calc(100%-0.75rem)]"
+                                        className="w-[calc(33.333%-0.75rem)] mt-3 mx-1.5 p-2 pb-4 bg-white-0 border border-stroke-soft-200 rounded-xl shadow-[0_0.375rem_0.75rem_0_rgba(14,18,27,0.06)] cursor-pointer transition-colors hover:border-strong-950 max-md:w-[calc(100%-0.75rem)]"
                                         key={item.id}
                                     >
                                         <div className="mb-3 pt-2 pl-5.5 pr-6.5 bg-weak-50 rounded-t-lg">
@@ -50,18 +50,18 @@ const DocumentsPage = () => {
                                                 alt=""
                                             />
                                         </div>
-                                        <div className="flex items-center gap-1.5">
+                                        <div className="flex items-center gap-1.5 text-strong-950">
                                             <Icon
-                                                className="shrink-0 !size-4"
+                                                className="shrink-0 !size-4 fill-strong-950"
                                                 name="document"
                                             />
-                                            <div className="truncate text-label-sm">
+                                            <div className="truncate text-label-sm text-strong-950">
                                                 {item.title}
                                             </div>
                                             <div className="flex shrink-0 ml-auto">
                                                 {item.avatars.map((avatar) => (
                                                     <Image
-                                                        className="size-4 opacity-100 rounded-full object-cover not-last:-mr-1.5"
+                                                        className="size-4 opacity-100 rounded-full object-cover not-last:-mr-1.5 border border-white-0"
                                                         src={avatar}
                                                         width={16}
                                                         height={16}

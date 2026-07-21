@@ -21,7 +21,7 @@ const EnterCodePage = () => {
                 </>
             }
         >
-            <div className="">
+            <div>
                 <div className="flex gap-3 mb-5">
                     <Field
                         className="flex-1"
@@ -62,7 +62,7 @@ const EnterCodePage = () => {
                 </Button>
                 <div className="mt-5 text-center">
                     <Link
-                        className="text-label-sm text-blue-500 transition-colors hover:text-blue-700"
+                        className="text-label-sm text-blue-500 font-medium transition-colors hover:text-blue-700"
                         href="/auth/sign-in"
                     >
                         Back to login page

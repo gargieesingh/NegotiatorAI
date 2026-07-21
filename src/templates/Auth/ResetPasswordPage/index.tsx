@@ -17,7 +17,7 @@ const ResetPasswordPage = () => {
                 <>Lost Your Key? Reset Your Password and Regain Control!</>
             }
         >
-            <div className="">
+            <div>
                 <div className="flex flex-col gap-4.5">
                     <Field
                         placeholder="Enter password"
@@ -44,7 +44,7 @@ const ResetPasswordPage = () => {
                 </div>
                 <div className="mt-5 text-center">
                     <Link
-                        className="text-label-sm text-blue-500 transition-colors hover:text-blue-700"
+                        className="text-label-sm text-blue-500 font-medium transition-colors hover:text-blue-700"
                         href="/auth/forgot-password"
                     >
                         Forgotten Password?

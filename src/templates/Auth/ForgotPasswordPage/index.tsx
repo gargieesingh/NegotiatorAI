@@ -17,9 +17,9 @@ const ForgotPasswordPage = () => {
                 <>Lost Your Key? Reset Your Password and Regain Control!</>
             }
         >
-            <div className="">
+            <div>
                 <Button
-                    className="gap-4.5 w-full !h-12 !rounded-xl !text-label-md text-sub-600"
+                    className="gap-4.5 w-full !h-12 !rounded-xl !text-label-md text-sub-600 bg-white-0 hover:bg-weak-50 border border-stroke-soft-200"
                     isStroke
                 >
                     <Image
@@ -53,7 +53,7 @@ const ForgotPasswordPage = () => {
                 </div>
                 <div className="mt-5 text-center">
                     <Link
-                        className="text-label-sm text-blue-500 transition-colors hover:text-blue-700"
+                        className="text-label-sm text-blue-500 font-medium transition-colors hover:text-blue-700"
                         href="/auth/sign-in"
                     >
                         Back to login page

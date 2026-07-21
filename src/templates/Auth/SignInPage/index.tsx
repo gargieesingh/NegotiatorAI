@@ -17,16 +17,16 @@ const SignInPage = () => {
             description={
                 <>
                     Don’t have an account?{" "}
-                    <Link className="text-blue-500" href="/auth/sign-up">
+                    <Link className="text-blue-500 font-medium hover:underline" href="/auth/sign-up">
                         Sign up
                     </Link>{" "}
                     here
                 </>
             }
         >
-            <div className="">
+            <div>
                 <Button
-                    className="gap-4.5 w-full !h-12 !rounded-xl !text-label-md text-sub-600"
+                    className="gap-4.5 w-full !h-12 !rounded-xl !text-label-md text-sub-600 bg-white-0 hover:bg-weak-50 border border-stroke-soft-200"
                     isStroke
                 >
                     <Image
@@ -67,7 +67,7 @@ const SignInPage = () => {
                 </div>
                 <div className="mt-5 text-center">
                     <Link
-                        className="text-label-sm text-blue-500 transition-colors hover:text-blue-700"
+                        className="text-label-sm text-blue-500 font-medium transition-colors hover:text-blue-700"
                         href="/auth/forgot-password"
                     >
                         Forgotten Password?
