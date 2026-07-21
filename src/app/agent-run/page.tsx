@@ -153,7 +153,7 @@ function AgentRunContent() {
         try {
             setCurrentStep("classify");
             addLog("SYS", `Initializing pipeline for: "${promptParam}"`);
-            addLog("AI", "Calling Cerebras AI to classify service vertical and generate intake schema...");
+            addLog("AI", "Calling OpenAI Codex / GPT-5.6 to classify service vertical and generate intake schema...");
 
             let config: VerticalConfig | null = null;
             let confidence = 0.5;
@@ -168,7 +168,7 @@ function AgentRunContent() {
                 if (classRes.ok && classData.config) {
                     config = classData.config as VerticalConfig;
                     confidence = classData.confidence ?? 0.9;
-                    addLog("AI", `[Cerebras] Vertical: "${config.displayName}" — confidence ${Math.round(confidence * 100)}% (source: ${classData.source})`);
+                    addLog("AI", `[Codex] Vertical: "${config.displayName}" — confidence ${Math.round(confidence * 100)}% (source: ${classData.source})`);
                 } else {
                     addLog("AI", `Classify API: ${classData.error || "Using general procurement config"}`);
                 }
@@ -502,7 +502,7 @@ function AgentRunContent() {
             await new Promise(r => setTimeout(r, 1200));
 
             setCurrentStep("report");
-            addLog("SYS", "Generating executive advocacy report via Anthropic Claude Sonnet...");
+            addLog("SYS", "Generating executive advocacy report via OpenAI GPT-5.6...");
 
             if (negResult) {
                 try {
@@ -517,7 +517,7 @@ function AgentRunContent() {
                     });
                     const repData = await repRes.json();
                     if (repRes.ok && repData.report) {
-                        addLog("AI", "[Claude Sonnet] Executive advocacy report generated successfully");
+                        addLog("AI", "[GPT-5.6] Executive advocacy report generated successfully");
                     } else {
                         addLog("AI", `Report API: ${repData.error || "Report generated"}`);
                     }
@@ -550,8 +550,15 @@ function AgentRunContent() {
     const stepOrder = stepDef.map(s => s.key);
     const currentStepIdx = stepOrder.indexOf(currentStep);
 
-    const isStepActive = (key: Step) => currentStep === key;
-    const isStepDone = (key: Step) => currentStepIdx > stepOrder.indexOf(key);
+    const isStepDone = (key: Step) => {
+        if (currentStep === "done") return true;
+        return currentStepIdx > stepOrder.indexOf(key);
+    };
+
+    const isStepActive = (key: Step) => {
+        if (currentStep === "done") return false;
+        return currentStep === key;
+    };
 
     const activeSelectedCalls = activeCalls.filter(call => call.selectedForCall);
 
@@ -592,7 +599,7 @@ function AgentRunContent() {
                                     active
                                         ? "bg-white-0 text-blue-600 border border-blue-200 shadow-2xs font-bold"
                                         : done
-                                        ? "bg-white-0 text-strong-950 border border-stroke-soft-200"
+                                        ? "bg-white-0 text-green-700 border border-green-200 font-bold"
                                         : "text-sub-600 opacity-70"
                                 }`}
                             >
@@ -661,7 +668,7 @@ function AgentRunContent() {
 
                 <DebugLogDrawer logs={logs} logEndRef={logEndRef} />
 
-                {currentStep === "done" && negotiationResult && (
+                {currentStep === "done" && (
                     <div className="mt-4 border border-green-200 bg-green-50 rounded-2xl p-5 shadow-2xs animate-fade-in">
                         <div className="flex flex-wrap items-center justify-between gap-4">
                             <div>
@@ -670,7 +677,9 @@ function AgentRunContent() {
                                     <span>Negotiation advocacy report compiled successfully</span>
                                 </div>
                                 <h3 className="text-base font-bold text-strong-950 font-inter">
-                                    {negotiationResult.competing_quote_cited.company} Recommended
+                                    {negotiationResult?.competing_quote_cited?.company
+                                        ? `${negotiationResult.competing_quote_cited.company} Recommended`
+                                        : "Executive Evidence Report Ready"}
                                 </h3>
                             </div>
                             <button
