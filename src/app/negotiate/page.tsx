@@ -17,21 +17,15 @@ export default function NegotiatePage() {
   useEffect(() => {
     const storedQuotes = localStorage.getItem(quotesStorageKey);
     const storedResult = localStorage.getItem(negotiationStorageKey);
-    if (!storedQuotes) {
-      router.replace('/calls');
-      return;
-    }
     try {
-      setQuotes(JSON.parse(storedQuotes) as Quote[]);
+      if (storedQuotes) setQuotes(JSON.parse(storedQuotes) as Quote[]);
       if (storedResult) setResult(JSON.parse(storedResult) as NegotiationResult);
-    } catch {
-      router.replace('/calls');
+    } catch (e) {
+      console.error("Failed to parse stored negotiation details:", e);
     }
-  }, [router]);
+  }, []);
 
-  if (!quotes) return null;
-
-  if (!result) {
+  if (!quotes || !result) {
     return (
       <Layout>
         <div className="chat-wrapper">

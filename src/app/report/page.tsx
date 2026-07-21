@@ -21,21 +21,17 @@ export default function ReportPage() {
     const storedQuotes = localStorage.getItem(quotesStorageKey);
     const storedNegotiation = localStorage.getItem(negotiationStorageKey);
 
-    if (!storedQuotes || !storedNegotiation) {
-      router.replace('/calls');
-      return;
-    }
     try {
       if (job) setJobSpec(JSON.parse(job));
-      setQuotes(JSON.parse(storedQuotes) as Quote[]);
-      setNegotiation(JSON.parse(storedNegotiation) as NegotiationResult);
-      setReady(true);
-    } catch {
-      router.replace('/calls');
+      if (storedQuotes) setQuotes(JSON.parse(storedQuotes) as Quote[]);
+      if (storedNegotiation) setNegotiation(JSON.parse(storedNegotiation) as NegotiationResult);
+    } catch (e) {
+      console.error("Failed to parse stored report details:", e);
     }
-  }, [router]);
+    setReady(true);
+  }, []);
 
-  if (!ready || !negotiation) {
+  if (!ready || !negotiation || !quotes || quotes.length === 0) {
     return (
       <Layout>
         <div className="chat-wrapper">
