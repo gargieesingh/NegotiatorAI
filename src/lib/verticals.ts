@@ -124,13 +124,19 @@ export function inferVertical(description: string): VerticalConfig {
   if (/car|vehicle|auto|mechanic|repair|body shop/.test(text)) return verticalRegistry.auto_repair;
   if (/contractor|renovat|plumb|roof|kitchen|remodel/.test(text)) return verticalRegistry.contractor_bid;
   if (/wedding|photograph|bridal|reception|mehendi/.test(text)) return verticalRegistry.wedding_photography;
+  
+  const cleanTitle = description.replace(/[{}"']/g, '').trim();
+  const displayName = cleanTitle.length > 50 ? cleanTitle.slice(0, 47) + '...' : cleanTitle || 'Universal Service & Deal';
+
   return buildJobScopedConfig({
-    id: 'general_service', displayName: 'General service quote', summary: 'Compare itemized quotes for the confirmed service scope.',
+    id: 'general_service',
+    displayName: displayName,
+    summary: `Price-shop, find providers, and negotiate itemized rates for ${displayName}.`,
     intakeFields: [
-      { key: 'service_location', label: 'Service city / location', type: 'text', required: true },
-      { key: 'service_description', label: 'What needs to be done?', type: 'textarea', required: true },
-      { key: 'desired_timing', label: 'Desired date or timeline', type: 'text', required: true },
-      { key: 'special_requirements', label: 'Special requirements', type: 'textarea', required: false },
+      { key: 'service_location', label: 'Location / City / Region', type: 'text', required: true },
+      { key: 'service_description', label: 'Requirements & Specifications', type: 'textarea', required: true },
+      { key: 'desired_timing', label: 'Date, Timeline or Schedule', type: 'text', required: true },
+      { key: 'special_requirements', label: 'Special Requirements', type: 'textarea', required: false },
     ],
     discoveryQuery: '{{service_description}} providers near {{service_location}}',
   });

@@ -17,13 +17,14 @@ function textResponse(content: Anthropic.ContentBlock[]): string {
   return block.text;
 }
 
-export async function generateReport(quotes: Quote[], negotiationResult: NegotiationResult, jobSpec: JobSpec): Promise<Report> {
+export async function generateReport(quotes: Quote[], negotiationResult: NegotiationResult, jobSpec: any): Promise<Report> {
+  const verticalName = jobSpec?.vertical?.replace('_', ' ') || jobSpec?.config?.displayName || 'service procurement';
   const response = await client().messages.create({
     model: 'claude-sonnet-4-6',
     max_tokens: 2000,
     messages: [{
       role: 'user',
-      content: `You are a consumer advocate analyzing wedding-photography quotes. Return only JSON matching this exact report shape: { generated_at, summary, ranked_quotes, negotiation_summary, recommendation, red_flags_found }. Rank transparent, binding, itemized packages with complete requested event coverage above incomplete or suspicious low offers. Cite only transcript text present in the supplied data. Never invent a quote, inclusion, transcript, or price.\n\nCONFIRMED WEDDING BRIEF:\n${JSON.stringify(jobSpec)}\n\nQUOTES:\n${JSON.stringify(quotes)}\n\nNEGOTIATION:\n${JSON.stringify(negotiationResult)}`,
+      content: `You are a consumer advocate analyzing ${verticalName} quotes for a client. Return only JSON matching this exact report shape: { generated_at: string, summary: string, ranked_quotes: Array<{ quote_id: string, rank: number, company_name: string, price: number, pros: string[], cons: string[] }>, negotiation_summary: string, recommendation: string, red_flags_found: string[] }. Rank transparent, binding, itemized bids with complete requested scope above incomplete or suspicious lowball offers. Cite only transcript text present in the supplied data. Never invent a quote, inclusion, transcript, or price.\n\nCONFIRMED JOB BRIEF:\n${JSON.stringify(jobSpec)}\n\nQUOTES:\n${JSON.stringify(quotes)}\n\nNEGOTIATION RESULT:\n${JSON.stringify(negotiationResult)}`,
     }],
   });
   return parseJson(textResponse(response.content)) as Report;
