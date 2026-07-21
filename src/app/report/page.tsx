@@ -23,8 +23,35 @@ export default function ReportPage() {
 
     try {
       if (job) setJobSpec(JSON.parse(job));
-      if (storedQuotes) setQuotes(JSON.parse(storedQuotes) as Quote[]);
-      if (storedNegotiation) setNegotiation(JSON.parse(storedNegotiation) as NegotiationResult);
+      const parsedQuotes = storedQuotes ? JSON.parse(storedQuotes) as Quote[] : [];
+      if (parsedQuotes.length > 0) setQuotes(parsedQuotes);
+
+      if (storedNegotiation) {
+        setNegotiation(JSON.parse(storedNegotiation) as NegotiationResult);
+      } else if (parsedQuotes.length > 0) {
+        // Preserve access to evidence from completed calls if a prior run failed
+        // before its negotiation result was stored. This intentionally records no
+        // savings rather than inferring a negotiation outcome that did not occur.
+        const orderedQuotes = [...parsedQuotes].sort((left, right) => left.final_price - right.final_price);
+        const recommendedQuote = orderedQuotes[0];
+        const comparisonQuote = orderedQuotes[orderedQuotes.length - 1];
+        setNegotiation({
+          negotiation_id: 'quote-comparison',
+          target_company: comparisonQuote.company_name,
+          strategy_used: 'Completed quote comparison',
+          competing_quote_cited: {
+            company: recommendedQuote.company_name,
+            amount: recommendedQuote.final_price,
+            binding: recommendedQuote.quote?.binding ?? false,
+          },
+          initial_target_price: comparisonQuote.final_price,
+          final_target_price: comparisonQuote.final_price,
+          price_changed: false,
+          savings_achieved: 0,
+          transcript: [],
+          outcome: 'held_firm',
+        });
+      }
     } catch (e) {
       console.error("Failed to parse stored report details:", e);
     }

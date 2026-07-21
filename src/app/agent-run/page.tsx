@@ -398,7 +398,13 @@ function AgentRunContent() {
                 const negRes = await fetch("/api/negotiate", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ quotes: polledQuotes }),
+                    // The negotiation endpoint validates the confirmed brief as well as
+                    // the live quotes. Without it, the request is rejected and no
+                    // negotiation result is persisted for the report page.
+                    body: JSON.stringify({
+                        quotes: polledQuotes,
+                        job_spec: generalJobSpec,
+                    }),
                 });
                 const negData = await negRes.json();
 
