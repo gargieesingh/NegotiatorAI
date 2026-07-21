@@ -6,7 +6,7 @@ type Props = {
 };
 
 const File = ({ name, size }: Props) => (
-    <div className="flex items-center gap-3 max-w-97 h-12 border border-stroke-soft-200 bg-weak-50 rounded-lg px-3.5">
+    <div className="flex items-center gap-3 max-w-97 h-12 border border-stroke-soft-200 bg-white-0 rounded-lg px-3.5">
         <div className="flex justify-center items-center size-7 rounded-sm bg-blue-50">
             <Image
                 src="/images/doc-type.svg"
@@ -16,8 +16,8 @@ const File = ({ name, size }: Props) => (
                 alt="File"
             />
         </div>
-        <div className="text-label-sm">{name}</div>
-        <div className="flex items-center ml-auto text-soft-400">
+        <div className="text-label-sm text-strong-950 font-medium">{name}</div>
+        <div className="flex items-center ml-auto text-sub-600">
             <div className="text-p-xs">PDF</div>
             <div className="size-0.75 mx-1 rounded-full bg-soft-400"></div>
             <div className="text-label-xs">{size}</div>
@@ -26,3 +26,4 @@ const File = ({ name, size }: Props) => (
 );
 
 export default File;
+

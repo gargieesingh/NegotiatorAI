@@ -14,7 +14,7 @@ const Preview = ({ className, image, index }: Props) => {
     return (
         <>
             <div
-                className={`absolute cursor-pointer overflow-hidden rounded-xl ${
+                className={`absolute cursor-pointer overflow-hidden rounded-xl bg-white-0 border border-stroke-soft-200 ${
                     className || ""
                 }`}
                 onClick={() => setOpen(true)}
@@ -26,7 +26,7 @@ const Preview = ({ className, image, index }: Props) => {
                     alt=""
                 />
                 {index === 0 && (
-                    <div className="absolute inset-0 rounded-xl bg-overlay backdrop-blur-2xl">
+                    <div className="absolute inset-0 rounded-xl bg-white-0/80 backdrop-blur-2xl border border-stroke-soft-200">
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center gap-1.5 w-full">
                             <Image
                                 className="w-6 opacity-100"
@@ -35,7 +35,7 @@ const Preview = ({ className, image, index }: Props) => {
                                 height={24}
                                 alt=""
                             />
-                            <div className="text-label-sm text-static-white max-md:text-label-xs">
+                            <div className="text-label-sm text-strong-950 max-md:text-label-xs">
                                 Generating...
                             </div>
                         </div>

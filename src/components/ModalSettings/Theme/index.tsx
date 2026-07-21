@@ -36,7 +36,7 @@ const Theme = ({}) => {
                     <div
                         className={`flex flex-col flex-1 border rounded-lg bg-white-0 overflow-hidden cursor-pointer transition-colors hover:border-blue-500 ${
                             theme === button.value
-                                ? "border-blue-500 dark:text-static-black"
+                                ? "border-blue-500"
                                 : "border-stroke-soft-200"
                         }`}
                         key={button.id}

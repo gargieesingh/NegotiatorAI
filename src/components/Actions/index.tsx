@@ -19,7 +19,7 @@ const Actions = ({ className, classNameButton, items }: Props) => {
                 }`}
             >
                 <Icon
-                    className="fill-icon-sub-600 transition-colors group-hover:fill-strong-950 group-[[data-open]]:fill-strong-950"
+                    className="fill-sub-600 transition-colors group-hover:fill-strong-950 group-[[data-open]]:fill-strong-950"
                     name="dots"
                 />
             </MenuButton>
@@ -31,7 +31,7 @@ const Actions = ({ className, classNameButton, items }: Props) => {
             >
                 {items.map((item, index) => (
                     <MenuItem
-                        className="group flex items-center gap-3 h-8 px-3 rounded-lg text-label-sm text-soft-600 transition-colors hover:bg-weak-50 hover:text-strong-950"
+                        className="group flex items-center gap-3 h-8 px-3 rounded-lg text-label-sm text-sub-600 transition-colors hover:bg-weak-50 hover:text-strong-950"
                         key={index}
                         onClick={() => item.onClick()}
                         as="button"

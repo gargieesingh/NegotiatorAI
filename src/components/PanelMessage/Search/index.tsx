@@ -76,9 +76,9 @@ const Search = ({}) => {
                         delay: 0.2,
                     }}
                 >
-                    <div className="flex items-center p-1.25 pr-3 rounded-xl shadow-[0_0_0.1875rem_0_rgba(0,0,0,0.14)]">
-                        <div className="flex items-center gap-3 mr-auto text-label-md">
-                            <div className="flex justify-center items-center size-9 rounded-lg bg-weak-50">
+                    <div className="flex items-center p-1.25 pr-3 rounded-xl border border-stroke-soft-200 bg-weak-50 shadow-xs">
+                        <div className="flex items-center gap-3 mr-auto text-label-md text-strong-950">
+                            <div className="flex justify-center items-center size-9 rounded-lg bg-white-0 border border-stroke-soft-200">
                                 <Icon className="fill-strong-950" name="chat" />
                             </div>
                             Results
@@ -91,7 +91,7 @@ const Search = ({}) => {
                             Hide Steps
                         </button>
                     </div>
-                    <div className="mt-3.5 p-3 bg-weak-50 rounded-xl">
+                    <div className="mt-3.5 p-3 bg-weak-50 rounded-xl border border-stroke-soft-200">
                         {items.map((item, index) => {
                             const state = itemStates[index];
                             const isPending = state === "pending";
@@ -102,12 +102,12 @@ const Search = ({}) => {
                                 <div
                                     className={`flex items-center gap-2 not-last:mb-3 ${
                                         isPending
-                                            ? "opacity-28"
+                                            ? "opacity-40 text-sub-600"
                                             : isLoading
                                             ? "opacity-100 text-blue-500"
                                             : isActive
-                                            ? "opacity-100"
-                                            : "opacity-28"
+                                            ? "opacity-100 text-strong-950"
+                                            : "opacity-40 text-sub-600"
                                     }`}
                                     key={index}
                                 >

@@ -35,7 +35,7 @@ const Chart = ({}) => {
     const CustomTooltip = ({ payload }: { payload: { value: number }[] }) => {
         if (payload && payload.length) {
             return (
-                <div className="p-1.5 bg-strong-950 rounded-md text-label-xs text-white-0">
+                <div className="p-2 bg-white-0 border border-stroke-soft-200 rounded-lg text-label-xs text-strong-950 shadow-md">
                     Bitcoin : ${payload[0].value}
                 </div>
             );
@@ -45,9 +45,9 @@ const Chart = ({}) => {
 
     return (
         <div className="">
-            <div className="border border-soft-200 px-4.5 py-3 rounded-lg max-md:px-3">
+            <div className="bg-white-0 border border-stroke-soft-200 px-4.5 py-3 rounded-2xl max-md:px-3">
                 <div className="flex items-center mb-2">
-                    <div className="mr-auto text-h6">Bitcoin</div>
+                    <div className="mr-auto text-h6 text-strong-950">Bitcoin</div>
                     <div className="flex">
                         <Select
                             className=""
@@ -63,7 +63,7 @@ const Chart = ({}) => {
                     </div>
                 </div>
                 <div className="flex items-center gap-2 mb-4">
-                    <div className="text-h5 max-md:text-[1.5rem]">$94,112</div>
+                    <div className="text-h5 text-strong-950 max-md:text-[1.5rem]">$94,112</div>
                     <div className="flex items-center text-label-xs text-[#009934]">
                         <Icon
                             className="-rotate-90 !size-4 fill-[#009934]"
@@ -71,7 +71,7 @@ const Chart = ({}) => {
                         />
                         12%
                     </div>
-                    <div className="text-label-sm text-soft-400 max-md:hidden">
+                    <div className="text-label-sm text-sub-600 max-md:hidden">
                         vs last Week
                     </div>
                 </div>
@@ -115,7 +115,7 @@ const Chart = ({}) => {
                                 tickLine={false}
                                 tick={{
                                     fontSize: "0.875rem",
-                                    fill: "var(--text-soft-400)",
+                                    fill: "var(--text-sub-600)",
                                 }}
                                 height={32}
                                 dy={8}
@@ -126,13 +126,13 @@ const Chart = ({}) => {
                                 tickLine={false}
                                 tick={{
                                     fontSize: "0.875rem",
-                                    fill: "var(--text-soft-400)",
+                                    fill: "var(--text-sub-600)",
                                 }}
                             />
                             <Tooltip
                                 content={<CustomTooltip payload={[]} />}
                                 cursor={{
-                                    stroke: "var(--strong-950)",
+                                    stroke: "var(--stroke-soft-200)",
                                     strokeDasharray: "5 5",
                                 }}
                             />

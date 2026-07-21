@@ -11,7 +11,7 @@ const WebDesign = () => {
             <Question>
                 Scrape this URL and give me all the links:{" "}
                 <a
-                    className="underline text-label-sm text-blue-500 transition-colors hover:text-blue-400 hover:no-underline"
+                    className="underline text-label-sm text-blue-500 transition-colors hover:text-blue-600 hover:no-underline"
                     href="https://example.com"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -20,7 +20,7 @@ const WebDesign = () => {
                 </a>
             </Question>
             <Answer>
-                <div className="mb-6 max-md:mb-4">
+                <div className="mb-6 text-sub-600 max-md:mb-4">
                     If you&apos;re searching for the most beautiful websites
                     built with Webflow, there are several standout examples that
                     showcase the platform&apos;s capabilities in design,
@@ -29,18 +29,18 @@ const WebDesign = () => {
                 <div className="flex flex-wrap -mt-3 -mx-1.5">
                     {content.map((item, index) => (
                         <div
-                            className="w-[calc(50%-0.75rem)] mt-3 mx-1.5 p-3 bg-weak-50 border border-stroke-soft-200 rounded-2xl max-md:w-[calc(100%-0.75rem)]"
+                            className="w-[calc(50%-0.75rem)] mt-3 mx-1.5 p-3.5 bg-white-0 border border-stroke-soft-200 rounded-2xl max-md:w-[calc(100%-0.75rem)]"
                             key={item.id}
                         >
-                            <div className="text-[0.875rem] leading-[2rem] text-green-600">
+                            <div className="text-[0.875rem] leading-[2rem] font-medium text-green-600">
                                 Article #{index + 1}
                             </div>
-                            <div className="mb-2 text-label-lg max-md:text-label-md">
+                            <div className="mb-2 text-label-lg font-semibold text-strong-950 max-md:text-label-md">
                                 {item.title}
                             </div>
                             <div className="text-sub-600">
                                 {item.description}&nbsp;
-                                <span className="text-blue-500 transition-colors cursor-pointer hover:text-blue-400">
+                                <span className="text-blue-500 transition-colors cursor-pointer hover:text-blue-600 font-medium">
                                     See more
                                 </span>
                             </div>
@@ -55,7 +55,7 @@ const WebDesign = () => {
                                     />
                                 </div>
                                 <div className="grow">
-                                    <div className="text-label-md max-md:text-label-sm">
+                                    <div className="text-label-md font-medium text-strong-950 max-md:text-label-sm">
                                         {item.person}
                                     </div>
                                     <div className="text-p-xs text-soft-400">
@@ -75,3 +75,4 @@ const WebDesign = () => {
 };
 
 export default WebDesign;
+

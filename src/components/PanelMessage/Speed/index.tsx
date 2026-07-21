@@ -7,7 +7,7 @@ const Speed = ({}) => {
 
     return (
         <HeadlessSwitch
-            className="relative group inline-flex w-16 h-6 p-0.75 rounded-full bg-soft-200 overflow-hidden"
+            className="relative group inline-flex w-16 h-6 p-0.75 rounded-full bg-weak-50 border border-stroke-soft-200 overflow-hidden"
             checked={checked}
             onChange={setChecked}
         >
@@ -18,7 +18,7 @@ const Speed = ({}) => {
                 height={24}
                 alt="Speed"
             />
-            <span className="relative z-2 flex items-center justify-center w-12 h-4.5 bg-white-0 rounded-full text-p-xs text-sub-600 transition-transform group-data-[checked]:translate-x-2.5">
+            <span className="relative z-2 flex items-center justify-center w-12 h-4.5 bg-white-0 border border-stroke-soft-200 rounded-full text-p-xs text-sub-600 transition-transform group-data-[checked]:translate-x-2.5">
                 Speed
             </span>
         </HeadlessSwitch>

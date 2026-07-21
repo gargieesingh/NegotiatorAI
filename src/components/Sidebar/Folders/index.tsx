@@ -17,8 +17,8 @@ const Folders = ({}) => {
     return (
         <div className="mb-2">
             <div
-                className={`group flex items-center gap-2 h-10 px-3 text-label-sm transition-colors cursor-pointer hover:text-strong-950 ${
-                    active ? "!text-blue-500" : "text-sub-600"
+                className={`group flex items-center gap-2 h-10 px-3 rounded-xl text-label-sm transition-colors cursor-pointer hover:text-strong-950 hover:bg-weak-50 ${
+                    active ? "!text-blue-500 bg-weak-50 font-medium" : "text-sub-600"
                 }`}
                 onClick={() => setActive(!active)}
             >

@@ -14,8 +14,8 @@ const NavLink = ({ href, title, icon }: Props) => {
 
     return (
         <Link
-            className={`group relative flex items-center shrink-0 gap-2 h-10 px-3 text-label-sm transition-colors hover:text-strong-950 not-last:mb-2 ${
-                isActive ? "!text-blue-500" : "text-sub-600"
+            className={`group relative flex items-center shrink-0 gap-2 h-10 px-3 text-label-sm font-medium transition-colors hover:text-strong-950 not-last:mb-1 ${
+                isActive ? "!text-blue-500 font-semibold" : "text-sub-600"
             }`}
             href={href}
         >
@@ -25,12 +25,7 @@ const NavLink = ({ href, title, icon }: Props) => {
                 }`}
                 name={icon}
             />
-            <div className="">{title}</div>
-            {title === "Templates" && (
-                <div className="ml-auto px-2 py-0.5 bg-strong-950 rounded-md text-[0.6875rem] leading-[1rem] text-white-0">
-                    Beta
-                </div>
-            )}
+            <div>{title}</div>
         </Link>
     );
 };

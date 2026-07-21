@@ -4,7 +4,7 @@ import Icon from "@/components/Icon";
 
 const User = ({}) => (
     <Link
-        className="group flex items-center shrink-0 gap-2 mx-5 pt-3 px-3 pb-5 border-t border-stroke-soft-200"
+        className="group flex items-center shrink-0 gap-2 mx-5 pt-3 px-3 pb-5 border-t border-stroke-soft-200 transition-colors"
         href="/auth/sign-in"
     >
         <div className="">
@@ -17,7 +17,7 @@ const User = ({}) => (
             />
         </div>
         <div className="text-label-sm">
-            <div className="">Emillia Caitin</div>
+            <div className="text-strong-950 font-medium">Emillia Caitin</div>
             <div className="text-sub-600">hey@agency.com</div>
         </div>
         <Icon
@@ -28,3 +28,4 @@ const User = ({}) => (
 );
 
 export default User;
+

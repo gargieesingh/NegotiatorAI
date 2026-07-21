@@ -16,8 +16,8 @@ const Answer = ({ children }: Props) => (
             />
         </div>
         <div className="w-[calc(100%-2.25rem)] pl-3">
-            <div className="mb-1 text-label-sm">Odyssey AI</div>
-            {children}
+            <div className="mb-1 text-label-sm text-strong-950 font-medium">Odyssey AI</div>
+            <div className="text-sub-600">{children}</div>
         </div>
     </div>
 );

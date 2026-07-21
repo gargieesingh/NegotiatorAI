@@ -44,9 +44,9 @@ print(is_prime(15))  # False`);
                 Write a Python function that checks if a number is prime.
             </Question>
             <Answer>
-                <div className="mb-1">Sure here is the response:</div>
+                <div className="mb-2 text-sub-600">Sure here is the response:</div>
                 <CodeEditor
-                    title="Contact Form"
+                    title="Python Code Runner"
                     language="python"
                     initialCode={code}
                     onCodeChange={setCode}
@@ -59,3 +59,4 @@ print(is_prime(15))  # False`);
 };
 
 export default PythonRunner;
+

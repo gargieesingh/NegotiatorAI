@@ -7,9 +7,9 @@ const SoloImage = ({}) => {
 
     return (
         <>
-            <div className="cursor-pointer" onClick={() => setOpen(true)}>
+            <div className="cursor-pointer bg-white-0 border border-stroke-soft-200 rounded-2xl p-1 overflow-hidden" onClick={() => setOpen(true)}>
                 <Image
-                    className="w-full rounded-xl"
+                    className="w-full rounded-xl object-cover"
                     src="/images/image-1.jpg"
                     width={731}
                     height={418}

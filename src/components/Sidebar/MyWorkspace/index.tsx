@@ -8,18 +8,18 @@ import {
 import Icon from "@/components/Icon";
 
 const options = [
-    { id: 1, name: "My Workspace" },
-    { id: 2, name: "Team Workspace" },
-    { id: 3, name: "Sandbox" },
+    { id: 1, name: "Negotiator AI" },
+    { id: 2, name: "Procurement Hub" },
+    { id: 3, name: "Deals Sandbox" },
 ];
 
 const MyWorkspace = ({}) => {
     const [value, setValue] = useState(options[0]);
     return (
         <Listbox value={value} onChange={setValue}>
-            <ListboxButton className="group flex items-center gap-2 w-full p-1.25 pr-3 rounded-xl cursor-pointer outline-0 max-lg:w-[calc(100%-1.75rem)] dark:shadow-[0_0_0.1875rem_0_rgba(255,255,255,0.16)]">
-                <div className="flex justify-center items-center bg-weak-50 rounded-lg size-8.75 font-medium">
-                    P
+            <ListboxButton className="group flex items-center gap-2.5 w-full p-1.25 pr-3 rounded-xl cursor-pointer outline-0 max-lg:w-[calc(100%-1.75rem)] hover:bg-weak-50 transition-colors text-strong-950 font-semibold">
+                <div className="flex justify-center items-center bg-blue-500 rounded-lg size-8.75 font-bold text-white-0 text-sm shadow-xs">
+                    N
                 </div>
                 <div className="truncate text-label-sm">{value.name}</div>
                 <Icon

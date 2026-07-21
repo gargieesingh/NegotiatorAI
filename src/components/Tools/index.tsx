@@ -22,7 +22,7 @@ const Tools = ({ activeId, setActiveId, visible, onClose }: Props) => {
 
     return (
         <div
-            className={`fixed top-5 right-5 bottom-5 flex flex-col w-80 p-5 bg-white-0 rounded-3xl shadow-[0_0_1.25rem_0_rgba(0,0,0,0.03)] overflow-auto scrollbar-none transition-transform max-3xl:w-65 max-2xl:z-20 max-2xl:shadow-2xl max-lg:top-0 max-lg:right-0 max-lg:bottom-0 max-lg:w-75 max-lg:rounded-none max-md:w-full max-md:p-4 ${
+            className={`fixed top-5 right-5 bottom-5 flex flex-col w-80 p-5 bg-white-0 border border-stroke-soft-200 rounded-3xl shadow-xl overflow-auto scrollbar-none transition-transform max-3xl:w-65 max-2xl:z-20 max-lg:top-0 max-lg:right-0 max-lg:bottom-0 max-lg:w-75 max-lg:rounded-none max-md:w-full max-md:p-4 ${
                 visible
                     ? "translate-x-0 max-2xl:translate-x-[calc(100%+1.25rem)]"
                     : "translate-x-[calc(100%+1.25rem)] max-2xl:translate-x-0"
@@ -30,10 +30,10 @@ const Tools = ({ activeId, setActiveId, visible, onClose }: Props) => {
         >
             <div className="flex items-center gap-2 mb-5">
                 <Icon className="!size-6 fill-strong-950" name="wrench" />
-                <div className="text-[1.125rem] leading-[1.25rem]">Tools</div>
+                <div className="text-[1.125rem] leading-[1.25rem] font-semibold text-strong-950">Tools</div>
                 <button className="group ml-auto text-0" onClick={onClose}>
                     <Icon
-                        className="text-label-sm fill-strong-950 transition-colors group-hover:fill-blue-500"
+                        className="text-label-sm fill-sub-600 transition-colors group-hover:fill-strong-950"
                         name="close"
                     />
                 </button>

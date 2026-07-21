@@ -7,8 +7,8 @@ const LanguageTranslator = () => {
     return (
         <Chat>
             <Question>
-                <div className="mb-1">Translate this text to frensh:</div>
-                <div className="">
+                <div className="mb-2 text-strong-950 font-medium">Translate this text to french:</div>
+                <div className="bg-white-0 border border-stroke-soft-200 rounded-xl p-3.5 text-sub-600">
                     Beneath the quiet hum of a late-night city, a single
                     streetlamp flickered like it was holding on to its last
                     breath. Somewhere nearby, the scent of fresh rain clung to
@@ -19,8 +19,8 @@ const LanguageTranslator = () => {
                 </div>
             </Question>
             <Answer>
-                <div className="mb-4">Sure here is the text in frensh:</div>
-                <div className="text-label-sm">
+                <div className="mb-3 text-sub-600">Sure here is the text in french:</div>
+                <div className="bg-white-0 border border-stroke-soft-200 rounded-xl p-4 text-strong-950 text-label-sm font-normal">
                     Sous le doux bourdonnement d&apos;une ville tard dans la
                     nuit, un seul lampadaire vacillait comme s&apos;il
                     s&apos;accrochait à son dernier souffle. Non loin de là,
@@ -31,7 +31,7 @@ const LanguageTranslator = () => {
                     attendant que quelque chose d’indicible se produise.
                 </div>
                 <Button
-                    className="!h-9 mt-6 !rounded-lg !bg-weak-50 max-md:mt-4"
+                    className="!h-9 mt-4 !rounded-lg !bg-white-0 border border-stroke-soft-200 text-strong-950 hover:!bg-weak-50 max-md:mt-4"
                     icon="language-1"
                     isStroke
                 >
@@ -43,3 +43,4 @@ const LanguageTranslator = () => {
 };
 
 export default LanguageTranslator;
+

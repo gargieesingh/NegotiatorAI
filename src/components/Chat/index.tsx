@@ -9,7 +9,7 @@ type Props = {
 
 const Chat = ({ titleHead, hidePanelMessage, children }: Props) => {
     return (
-        <div className="chat-wrapper">
+        <div className="chat-wrapper bg-white-0 text-strong-950">
             <Head title={titleHead} />
             <div
                 className={`flex flex-col gap-4.5 grow p-7.5 overflow-auto scrollbar-none max-md:gap-3 max-md:p-4 max-md:pb-8 ${

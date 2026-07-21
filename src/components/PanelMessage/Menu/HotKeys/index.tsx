@@ -1,7 +1,7 @@
 import Image from "@/components/Image";
 
 const HotKeys = ({}) => (
-    <div className="flex items-center gap-3 py-3.5 border-b border-stroke-soft-200 text-label-sm max-md:hidden">
+    <div className="flex items-center gap-3 py-3.5 border-b border-stroke-soft-200 text-label-sm text-sub-600 max-md:hidden">
         <div className="flex items-center gap-1.5">
             <div className="">
                 <Image

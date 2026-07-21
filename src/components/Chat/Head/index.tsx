@@ -33,14 +33,14 @@ const Head = ({ title }: Props) => {
 
     return (
         <>
-            <div className="flex items-center shrink-0 h-13 px-3 border-b border-stroke-soft-200">
+            <div className="flex items-center shrink-0 h-13 px-3 bg-white-0 border-b border-stroke-soft-200">
                 {title ? (
                     title
                 ) : (
                     <div className="flex items-center gap-2 mr-auto">
                         <Icon className="fill-strong-950" name="chat" />
-                        <div className="text-label-sm">Ask your AI</div>
-                        <div className="px-3 py-0.5 bg-strong-950 rounded-md text-label-xs text-white-0">
+                        <div className="text-label-sm text-strong-950 font-medium">Ask your AI</div>
+                        <div className="px-3 py-0.5 bg-weak-50 border border-stroke-soft-200 rounded-md text-label-xs text-sub-600 font-medium">
                             Beta
                         </div>
                     </div>

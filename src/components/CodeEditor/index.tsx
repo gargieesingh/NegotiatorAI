@@ -41,9 +41,9 @@ const CodeEditor = ({
 
     return (
         <div className="bg-white-0 rounded-xl border border-stroke-soft-200 overflow-hidden">
-            <div className="flex items-center gap-2 p-4 font-[1rem] leading-[1.25rem]">
+            <div className="flex items-center gap-2 p-4 font-[1rem] leading-[1.25rem] border-b border-stroke-soft-200 bg-white-0 text-strong-950">
                 <Icon className="fill-strong-950" name="ai-programming" />
-                {title}
+                <span className="font-medium text-strong-950">{title}</span>
                 <Button
                     className="!h-9 ml-auto !px-3 rounded-lg text-sub-600 max-md:hidden"
                     isStroke
@@ -65,13 +65,13 @@ const CodeEditor = ({
                     </svg>
                 </Button>
             </div>
-            <div className="h-64">
+            <div className="h-64 bg-white-0">
                 <Editor
                     height="100%"
                     language={language}
                     value={code}
                     onChange={handleEditorChange}
-                    theme={theme === "light" ? "vs-light" : "vs-dark"}
+                    theme={theme === "dark" ? "vs-dark" : "vs-light"}
                     options={{
                         minimap: { enabled: false },
                         scrollBeyondLastLine: false,
@@ -90,7 +90,7 @@ const CodeEditor = ({
                 />
             </div>
             {onGenerate && (
-                <div className="py-4 text-center">
+                <div className="py-4 text-center border-t border-stroke-soft-200 bg-white-0">
                     <Button
                         isStroke
                         onClick={onGenerate}

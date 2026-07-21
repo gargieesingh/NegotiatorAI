@@ -8,13 +8,13 @@ const FileConverter = () => {
     return (
         <Chat>
             <Question>
-                <div className="mb-1">
+                <div className="mb-2 text-strong-950">
                     Convert this file from DOC to XLS please
                 </div>
                 <File name="Docment res.Doc" size="2.1 Mb" />
             </Question>
             <Answer>
-                <div className="mb-2">
+                <div className="mb-2 text-sub-600">
                     Sure converting your document to xls now:
                 </div>
                 <Converter />
@@ -24,3 +24,4 @@ const FileConverter = () => {
 };
 
 export default FileConverter;
+

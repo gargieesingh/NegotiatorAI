@@ -48,10 +48,10 @@ const Menu = ({}) => {
                                     name="arrow"
                                 />
                                 <div className="grow">
-                                    <div className="text-label-sm">
+                                    <div className="text-label-sm text-strong-950">
                                         {item.title}
                                     </div>
-                                    <div className="text-soft-400">
+                                    <div className="text-sub-600 text-p-xs">
                                         {item.description}
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@ const Menu = ({}) => {
                     </div>
                     <div className="-mx-3.5 px-3.5 py-3 bg-weak-50 rounded-b-xl border-t border-stroke-soft-200">
                         <TextareaAutosize
-                            className="w-full text-p-md text-strong-950 outline-none resize-none placeholder:text-sub-600"
+                            className="w-full text-p-md text-strong-950 bg-transparent outline-none resize-none placeholder:text-sub-600"
                             maxRows={5}
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}

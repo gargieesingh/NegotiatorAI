@@ -87,16 +87,16 @@ const EditorArticle = ({ content, onBack }: Props) => {
         <div className="chat-wrapper p-5 max-md:p-0">
             <div className="flex justify-between items-center mb-5 max-md:mb-0 max-md:p-3">
                 <button
-                    className="group flex items-center gap-2 text-label-sm max-md:text-0"
+                    className="group flex items-center gap-2 text-label-sm text-strong-950 max-md:text-0"
                     onClick={onBack}
                 >
-                    <div className="flex justify-center items-center size-9 bg-weak-50 rounded-lg transition-colors group-hover:bg-soft-200">
+                    <div className="flex justify-center items-center size-9 bg-white-0 border border-stroke-soft-200 rounded-lg transition-colors group-hover:bg-soft-200">
                         <Icon
                             className="rotate-90 fill-strong-950"
                             name="chevron"
                         />
                     </div>
-                    Non-Disclosure Agreement Document
+                    <span className="text-strong-950">Non-Disclosure Agreement Document</span>
                 </button>
                 <Button className="!h-8" isBlack onClick={onBack}>
                     Save Document
@@ -104,12 +104,12 @@ const EditorArticle = ({ content, onBack }: Props) => {
             </div>
             <div
                 ref={contentRef}
-                className="relative content grow bg-white-0 px-18 py-16 rounded-xl shadow-[0_4px_3.4rem_0_rgba(14,18,27,0.10)] overflow-y-auto scrollbar-none max-2xl:p-12 max-xl:p-8 max-md:px-3 max-md:py-4 dark:shadow-[0_0.25rem_3.4rem_0_rgba(255,255,255,0.10)]"
+                className="relative content grow bg-white-0 border border-stroke-soft-200 text-strong-950 px-18 py-16 rounded-xl shadow-[0_0.375rem_0.75rem_0_rgba(14,18,27,0.06)] overflow-y-auto scrollbar-none max-2xl:p-12 max-xl:p-8 max-md:px-3 max-md:py-4"
             >
                 {content}
                 {isTextSelected && (
                     <div
-                        className="absolute z-10 bg-white-0 border border-soft-200 rounded-lg shadow-lg p-1 flex items-center gap-1"
+                        className="absolute z-10 bg-white-0 border border-stroke-soft-200 rounded-lg shadow-xl p-1 flex items-center gap-1 text-strong-950"
                         style={{
                             top: `${selectionPosition.top}px`,
                             left: `${selectionPosition.left}px`,
@@ -117,25 +117,25 @@ const EditorArticle = ({ content, onBack }: Props) => {
                     >
                         <button
                             onClick={() => handleFormatText("bold")}
-                            className="flex justify-center items-center size-7 hover:bg-soft-200 rounded transition-colors"
+                            className="flex justify-center items-center size-7 text-sub-600 hover:text-strong-950 hover:bg-soft-200 rounded transition-colors"
                         >
                             <span className="font-bold text-sm">B</span>
                         </button>
                         <button
                             onClick={() => handleFormatText("italic")}
-                            className="flex justify-center items-center size-7 hover:bg-soft-200 rounded transition-colors"
+                            className="flex justify-center items-center size-7 text-sub-600 hover:text-strong-950 hover:bg-soft-200 rounded transition-colors"
                         >
                             <span className="italic text-sm">I</span>
                         </button>
                         <button
                             onClick={() => handleFormatText("underline")}
-                            className="flex justify-center items-center size-7 hover:bg-soft-200 rounded transition-colors"
+                            className="flex justify-center items-center size-7 text-sub-600 hover:text-strong-950 hover:bg-soft-200 rounded transition-colors"
                         >
                             <span className="underline text-sm">U</span>
                         </button>
                         <button
                             onClick={() => handleFormatText("strikethrough")}
-                            className="flex justify-center items-center size-7 hover:bg-soft-200 rounded transition-colors"
+                            className="flex justify-center items-center size-7 text-sub-600 hover:text-strong-950 hover:bg-soft-200 rounded transition-colors"
                         >
                             <span className="line-through text-sm">S</span>
                         </button>

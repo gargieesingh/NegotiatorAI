@@ -22,7 +22,7 @@ const Group = ({ group, activeId, setActiveId }: Props) => {
             className="not-last:mb-5 not-last:pb-5 not-last:border-b border-stroke-soft-200"
             key={group.id}
         >
-            <div className="mb-2 py-1 text-label-xs text-soft-400 max-md:mb-1">
+            <div className="mb-2 py-1 text-label-xs text-sub-600 font-medium max-md:mb-1">
                 {group.title}
             </div>
             <div className="">
@@ -36,7 +36,7 @@ const Group = ({ group, activeId, setActiveId }: Props) => {
                                 className="fill-strong-950"
                                 name={item.icon}
                             />
-                            <div className="text-label-md">{item.title}</div>
+                            <div className="text-label-md text-strong-950 font-medium">{item.title}</div>
                             <Switch
                                 className="ml-auto"
                                 checked={activeId === item.id}

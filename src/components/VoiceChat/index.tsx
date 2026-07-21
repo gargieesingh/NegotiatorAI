@@ -38,9 +38,9 @@ const VoiceChat = ({}) => {
         <>
             <div className="my-auto py-8 text-center max-md:py-3">
                 <div className="text-label-lg text-blue-500">
-                    I’m listing now...
+                    I’m listening now...
                 </div>
-                <div className="mt-3 text-h5 [&>span]:text-sub-600 max-xl:text-[1.5rem] max-md:mt-2 max-md:text-[1.2rem]">
+                <div className="mt-3 text-h5 text-strong-950 [&>span]:text-sub-600 max-xl:text-[1.5rem] max-md:mt-2 max-md:text-[1.2rem]">
                     &quot;I’ve been trying to log into my account, but every
                     time I enter my credentials, I get an error message saying
                     &apos;Invalid Password.&apos; I’m 100% sure I’m using the
@@ -74,7 +74,7 @@ const VoiceChat = ({}) => {
                         alt="AI Voice"
                     />
                 </div>
-                <div className="mb-9 text-h4 text-center max-2xl:mb-6 max-md:mb-4 max-md:text-[1.6rem]">
+                <div className="mb-9 text-h4 text-strong-950 text-center max-2xl:mb-6 max-md:mb-4 max-md:text-[1.6rem]">
                     Choose a voice
                 </div>
                 <div className="relative -mx-7.5 overflow-hidden before:absolute before:top-0 before:left-0 before:bottom-0 before:w-40 before:bg-gradient-to-r before:from-white-0 before:to-transparent before:z-5 before:pointer-events-none after:absolute after:top-0 after:right-0 after:bottom-0 after:w-40 after:bg-gradient-to-l after:from-white-0 after:to-transparent after:z-5 after:pointer-events-none max-md:before:hidden max-md:after:hidden">
@@ -102,11 +102,11 @@ const VoiceChat = ({}) => {
                         >
                             {items.map((item) => (
                                 <SwiperSlide
-                                    className="px-5 py-7 border border-stroke-soft-200 rounded-3xl text-center cursor-pointer max-md:p-4 max-md:rounded-2xl"
+                                    className="px-5 py-7 bg-white-0 border border-stroke-soft-200 rounded-3xl text-center cursor-pointer hover:bg-weak-50 transition-colors max-md:p-4 max-md:rounded-2xl"
                                     key={item.id}
                                     onClick={() => setIsListening(true)}
                                 >
-                                    <div className="mb-2 text-label-xl max-md:text-label-lg">
+                                    <div className="mb-2 text-label-xl text-strong-950 max-md:text-label-lg">
                                         {item.title}
                                     </div>
                                     <div className="text-label-lg text-sub-600 max-md:text-label-md">
@@ -150,7 +150,7 @@ const VoiceChat = ({}) => {
                 >
                     Start new chat
                 </Button>
-                <button className="mt-6 text-label-md text-strong-950 transition-colors hover:text-blue-500 max-md:mt-4">
+                <button className="mt-6 text-label-md text-sub-600 transition-colors hover:text-strong-950 max-md:mt-4">
                     Cancel
                 </button>
             </div>

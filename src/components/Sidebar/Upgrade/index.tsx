@@ -11,25 +11,17 @@ const Upgrade = ({}) => {
             <div className="mt-8 max-md:mt-6">
                 <div className="">
                     <Image
-                        className="w-full opacity-100 dark:hidden"
+                        className="w-full opacity-100"
                         src="/images/upgrade-pic-light.png"
                         width={220}
                         height={140}
                         alt="Upgrade"
                         priority
                     />
-                    <Image
-                        className="!hidden w-full opacity-100 dark:!block"
-                        src="/images/upgrade-pic-dark.png"
-                        width={220}
-                        height={140}
-                        alt="Upgrade"
-                        priority
-                    />
                 </div>
-                <div className="p-3 rounded-b-xl dark:shadow-[inset_0_0_0.1875rem_0_rgba(255,255,255,0.16)]">
+                <div className="p-3 rounded-b-xl border border-t-0 border-stroke-soft-200 bg-weak-50/50">
                     <div
-                        className="group flex items-center gap-1 text-label-md cursor-pointer"
+                        className="group flex items-center gap-1 text-label-md cursor-pointer text-strong-950 font-medium"
                         onClick={() => setOpen(true)}
                     >
                         Upgrade to Premium{" "}
@@ -40,7 +32,7 @@ const Upgrade = ({}) => {
                     </div>
                     <div className="mt-0.75 text-label-xs text-sub-600">
                         Want to reach{" "}
-                        <span className="text-strong-950">more features</span>{" "}
+                        <span className="text-strong-950 font-semibold">more features</span>{" "}
                         and grow much bigger?
                     </div>
                 </div>
@@ -51,3 +43,4 @@ const Upgrade = ({}) => {
 };
 
 export default Upgrade;
+
