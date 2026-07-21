@@ -11,6 +11,8 @@ The call cards do **not** learn that a call ended directly from Twilio or the El
 
 Therefore a vendor hanging up, declining to answer, or the agent ending the conversation is not enough by itself to update the screen. If the post-call webhook cannot reach the application, the call stays `calling`; after five minutes the browser proceeds with zero quotes and renders the shown Pipeline Error.
 
+The call-status route now also checks Twilio on each browser poll. A `busy` or `no-answer` result becomes **Not picked up**, while a completed telephony call becomes **Processing quote** until ElevenLabs provides its transcript. ElevenLabs' post-call webhook remains necessary to decide whether an ended conversation contains a usable quote or a documented decline.
+
 `localhost:3000` is the direct reason this occurs during local testing. ElevenLabs runs outside your computer and cannot send a webhook to `http://localhost:3000`. The webhook endpoint must be a public HTTPS URL such as:
 
 ```text
@@ -21,7 +23,7 @@ Configure that URL in the ElevenLabs workspace's **post-call transcription webho
 
 Important current limitations:
 
-- `src/lib/callStore.ts` is an in-memory `Map`. A server restart, hot reload, multi-instance deployment, or a webhook handled by a different instance loses the match and the endpoint returns `{ matched: false }`.
+- Call state now uses Vercel KV when `KV_REST_API_URL` and `KV_REST_API_TOKEN` are configured, with an in-memory fallback only for local development. Configure a Vercel KV database for the deployed project; without it, a server restart, hot reload, multi-instance deployment, or a webhook handled by a different instance can still lose the match.
 - There is no Twilio status callback route or provider-status reconciliation. The post-call transcript webhook is the only terminal-status source.
 - The webhook endpoint currently does not verify an ElevenLabs signature, deduplicate repeated events, or persist raw webhook payloads.
 - A successful webhook can still produce no numeric quote if the transcript does not explicitly state a price. That is intentionally treated as a callback/decline-style outcome instead of inventing a price.
@@ -80,6 +82,6 @@ The visible metrics/report values are then derived as follows:
 
 - Replace the in-memory call store with a durable database keyed by internal call ID and ElevenLabs conversation ID.
 - Add signed, idempotent webhook ingestion with raw event storage and retries.
-- Add a provider-status callback/reconciliation path so no-answer, busy, failed, and ended calls reach a terminal UI status even when a transcript webhook is delayed.
+- Twilio status is now reconciled during browser polling for busy/no-answer/failed/completed states. For production scale, replace polling with an authenticated provider-status callback as well.
 - Use a proper location parser or a user-confirmed field. Agent Run still uses a short city-list heuristic; this change adds `Rohtak` and resolves it to `Rohtak, Haryana`, but other unlisted locations still fall back to `Local City`.
 - Do not present the fixed demo-phone routing as live calls to the discovered businesses.
