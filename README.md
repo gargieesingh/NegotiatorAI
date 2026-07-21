@@ -1,5 +1,6 @@
 # Negotiator AI
-<img width="1533" height="602" alt="image" src="https://github.com/user-attachments/assets/14c582eb-2d0a-4e2a-b2ff-a77e458b802f" />
+<img width="1324" height="493" alt="image" src="https://github.com/user-attachments/assets/514abc98-fdae-49ba-a3e5-cf9b35ef11f9" />
+
 
 > **Autonomous AI Procurement & Price Negotiation Agent** Built for the OpenAI Hackathon.
 >
