@@ -97,7 +97,12 @@ export async function POST(request: NextRequest) {
     const metadataBody = record(metadata.body);
     const providerId = String(data.conversation_id ?? metadataBody.CallSid ?? metadataBody.call_sid ?? '');
     const call = (callId ? await getCall(callId) : undefined) ?? await getCallByProviderId(providerId);
-    if (!call) return NextResponse.json({ received: true, matched: false });
+    if (!call) {
+      console.warn('ElevenLabs webhook did not match a stored call', { eventType: event.type, callId, providerId });
+      return NextResponse.json({ received: true, matched: false });
+    }
+
+    console.info('ElevenLabs webhook matched call', { eventType: event.type, callId: call.id, providerId });
 
     if (event.type === 'call_initiation_failure') {
       const reason = String(data.failure_reason ?? 'unknown');

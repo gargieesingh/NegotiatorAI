@@ -13,8 +13,12 @@ async function reconcileTwilioStatus(id: string) {
       headers: { Authorization: `Basic ${credentials}` },
       cache: 'no-store',
     });
-    if (!response.ok) return state;
+    if (!response.ok) {
+      console.warn('Twilio call-status lookup failed', { callId: id, status: response.status });
+      return state;
+    }
     const call = await response.json() as { status?: string };
+    console.info('Twilio call-status reconciled', { callId: id, status: call.status ?? 'unknown' });
     if (call.status === 'busy' || call.status === 'no-answer') {
       return await updateCall(id, { status: 'no_answer', error: `Call was not picked up (${call.status}).`, completed_at: new Date().toISOString() }) ?? state;
     }
@@ -24,8 +28,9 @@ async function reconcileTwilioStatus(id: string) {
     if (call.status === 'completed' && state.status === 'calling') {
       return await updateCall(id, { status: 'processing' }) ?? state;
     }
-  } catch {
+  } catch (error) {
     // The ElevenLabs webhook remains the source of transcript and quote data.
+    console.warn('Twilio call-status reconciliation failed', { callId: id, error: error instanceof Error ? error.message : 'Unknown error' });
   }
   return state;
 }

@@ -10,11 +10,15 @@ function kvConfigured(): boolean {
 }
 
 function kvUrl(): string | undefined {
-  return process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
+  return process.env.KV_REST_API_URL
+    ?? process.env.UPSTASH_REDIS_REST_URL
+    ?? process.env.UPSTASH_REDIS_REST_KV_REST_API_URL;
 }
 
 function kvToken(): string | undefined {
-  return process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
+  return process.env.KV_REST_API_TOKEN
+    ?? process.env.UPSTASH_REDIS_REST_TOKEN
+    ?? process.env.UPSTASH_REDIS_REST_KV_REST_API_TOKEN;
 }
 
 async function kvCommand(command: string[]): Promise<unknown> {
