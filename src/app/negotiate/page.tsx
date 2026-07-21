@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowRight, ShieldAlert } from 'lucide-react';
-import { StepProgress } from '@/components/layout/StepProgress';
+import { StepProgress } from '@/components/negotiator-layout/StepProgress';
 import { negotiationStorageKey, quotesStorageKey } from '@/lib/config';
 import type { NegotiationResult, Quote } from '@/lib/types';
 

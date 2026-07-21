@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowRight, LoaderCircle, PhoneCall, ShieldCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { CallGrid } from '@/components/calls/CallGrid';
-import { StepProgress } from '@/components/layout/StepProgress';
+import { StepProgress } from '@/components/negotiator-layout/StepProgress';
 import { demoVendorRoles, generalJobStorageKey, generalVendorsStorageKey, jobSpecStorageKey, quotesStorageKey } from '@/lib/config';
 import type { CallJobSpec, ConversationState, DemoVendorParticipant, JobSpec, Quote } from '@/lib/types';
 import type { GeneralJobSpec } from '@/lib/verticals';

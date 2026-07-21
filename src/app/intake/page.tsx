@@ -10,7 +10,7 @@ import { GenericDocumentUpload } from '@/components/intake/GenericDocumentUpload
 import { GenericVoiceIntake } from '@/components/intake/GenericVoiceIntake';
 import { JobSpecConfirm } from '@/components/intake/JobSpecConfirm';
 import { VoiceIntake } from '@/components/intake/VoiceIntake';
-import { StepProgress } from '@/components/layout/StepProgress';
+import { StepProgress } from '@/components/negotiator-layout/StepProgress';
 import { generalJobStorageKey, jobSpecStorageKey } from '@/lib/config';
 import type { JobSpec } from '@/lib/types';
 import type { GeneralJobSpec, VerticalConfig } from '@/lib/verticals';

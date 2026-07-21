@@ -1,36 +1,21 @@
 import type { Metadata } from 'next';
-import { JetBrains_Mono, Space_Grotesk } from 'next/font/google';
-import { Toaster } from 'sonner';
-import { AiDisclosure } from '@/components/layout/AiDisclosure';
-import { Navbar } from '@/components/layout/Navbar';
+import localFont from 'next/font/local';
+import Providers from './providers';
 import './globals.css';
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-primary',
+const satoshi = localFont({
+  src: [
+    { path: '../../public/fonts/Satoshi-Light.woff2', weight: '300' },
+    { path: '../../public/fonts/Satoshi-Regular.woff2', weight: '400' },
+    { path: '../../public/fonts/Satoshi-Medium.woff2', weight: '500' },
+    { path: '../../public/fonts/Satoshi-Bold.woff2', weight: '700' },
+  ],
+  variable: '--font-satoshi',
 });
+const interDisplay = localFont({ src: '../../public/fonts/InterDisplay-Medium.woff2', weight: '500', variable: '--font-inter-display' });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  variable: '--font-mono',
-});
-
-export const metadata: Metadata = {
-  title: 'The Negotiator',
-  description: 'An AI advocate for transparent moving quotes.',
-};
+export const metadata: Metadata = { title: 'The Negotiator', description: 'Your AI negotiation agent.' };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="en">
-      <body className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} min-h-screen bg-negotiator-bg text-slate-100`}>
-        <Navbar />
-        <main className="min-h-screen pt-16">{children}</main>
-        <AiDisclosure />
-        <Toaster theme="dark" position="top-right" />
-      </body>
-    </html>
-  );
+  return <html className="text-[calc(0.7rem+0.35vw)] max-[2300px]:text-[calc(0.7rem+0.32vw)] max-[2150px]:text-[calc(0.7rem+0.28vw)] max-4xl:text-[1rem]" lang="en" suppressHydrationWarning><body className={`${satoshi.variable} ${interDisplay.variable} bg-weak-50 font-satoshi text-p-sm text-strong-950 antialiased`}><Providers>{children}</Providers></body></html>;
 }
