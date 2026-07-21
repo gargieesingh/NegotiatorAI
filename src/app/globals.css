@@ -409,3 +409,72 @@
 .animate-progress {
     animation: progress linear forwards;
 }
+
+/* Speak AI Premium Theming Utilities */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+.dark-bg-gradient {
+    background: radial-gradient(circle at 50% 50%, #161923 0%, #0e1017 100%);
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.15);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(1.3);
+        opacity: 0;
+    }
+}
+
+.pulse-visualizer-1 {
+    animation: pulse-ring 3s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+}
+
+.pulse-visualizer-2 {
+    animation: pulse-ring 3s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+    animation-delay: 1s;
+}
+
+.pulse-visualizer-3 {
+    animation: pulse-ring 3s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+    animation-delay: 2s;
+}
+
+@keyframes draw-path {
+    0% {
+        stroke-dashoffset: 100;
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        stroke-dashoffset: 0;
+        opacity: 0.3;
+    }
+}
+
+.glow-line {
+    stroke-dasharray: 20 10;
+    animation: draw-path 8s linear infinite;
+}
+

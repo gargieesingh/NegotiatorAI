@@ -1,7 +1,13 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import Providers from './providers';
 import './globals.css';
+
+const inter = Inter({
+  variable: '--font-inter',
+  subsets: ['latin'],
+});
 
 const satoshi = localFont({
   src: [
@@ -12,10 +18,29 @@ const satoshi = localFont({
   ],
   variable: '--font-satoshi',
 });
-const interDisplay = localFont({ src: '../../public/fonts/InterDisplay-Medium.woff2', weight: '500', variable: '--font-inter-display' });
 
-export const metadata: Metadata = { title: 'The Negotiator', description: 'Your AI negotiation agent.' };
+const interDisplay = localFont({
+  src: [
+    { path: '../../public/fonts/InterDisplay-Medium.woff2', weight: '500' },
+  ],
+  variable: '--font-inter-display',
+});
+
+export const metadata: Metadata = {
+  title: 'The Negotiator',
+  description: 'Your AI negotiation agent.',
+};
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html className="text-[calc(0.7rem+0.35vw)] max-[2300px]:text-[calc(0.7rem+0.32vw)] max-[2150px]:text-[calc(0.7rem+0.28vw)] max-4xl:text-[1rem]" lang="en" suppressHydrationWarning><body className={`${satoshi.variable} ${interDisplay.variable} bg-weak-50 font-satoshi text-p-sm text-strong-950 antialiased`}><Providers>{children}</Providers></body></html>;
+  return (
+    <html
+      className="text-[calc(0.7rem+0.35vw)] max-[2300px]:text-[calc(0.7rem+0.32vw)] max-[2150px]:text-[calc(0.7rem+0.28vw)] max-4xl:text-[1rem]"
+      lang="en"
+      suppressHydrationWarning
+    >
+      <body className={`${satoshi.variable} ${inter.variable} ${interDisplay.variable} bg-weak-50 font-satoshi text-p-sm text-strong-950 antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  );
 }
