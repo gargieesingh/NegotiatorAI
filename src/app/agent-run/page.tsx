@@ -39,7 +39,7 @@ interface ActiveCall {
     vendorName: string;
     phone: string;
     style: string;
-    status: "initiated" | "calling" | "complete" | "declined" | "error";
+    status: "initiated" | "calling" | "processing" | "complete" | "declined" | "no_answer" | "error";
     transcript: ConversationTurn[];
     quote?: Quote;
     error?: string;
@@ -255,11 +255,11 @@ function AgentRunContent() {
 
             const callIds: Array<{ callId: string; vendor: DemoVendorParticipant }> = [];
 
-            for (const participant of demoParticipants) {
+            await Promise.all(demoParticipants.map(async (participant) => {
                 if (!participant.phone_number) {
                     addLog("CALL", `⚠ ${participant.vendor_name}: no phone number from Google Places — skipping outbound call`);
                     setActiveCalls(prev => prev.map(c => c.id === participant.id ? { ...c, status: "error", error: "No phone number returned by Google Places" } : c));
-                    continue;
+                    return;
                 }
 
                 try {
@@ -286,7 +286,7 @@ function AgentRunContent() {
                     addLog("CALL", `✗ ${participant.vendor_name}: ${e.message}`);
                     setActiveCalls(prev => prev.map(c => c.id === participant.id ? { ...c, status: "error", error: e.message } : c));
                 }
-            }
+            }));
 
             if (callIds.length === 0) {
                 setCurrentStep("error");
@@ -314,7 +314,7 @@ function AgentRunContent() {
                         if (!statusRes.ok) continue;
                         const statusData = await statusRes.json();
 
-                        if (statusData.status === "complete" || statusData.status === "declined") {
+                        if (statusData.status === "complete" || statusData.status === "declined" || statusData.status === "no_answer") {
                             pendingCallIds.delete(callId);
                             const vendor = callIds.find(c => c.callId === callId)?.vendor;
 
@@ -325,12 +325,16 @@ function AgentRunContent() {
                                 quote: statusData.quote,
                             } : c));
 
-                            if (statusData.quote) {
+                            if (statusData.status === "complete" && statusData.quote) {
                                 polledQuotes.push(statusData.quote);
                                 addLog("CALL", `✓ ${statusData.vendor_name} call complete — quote: ${statusData.quote.quote?.total || statusData.quote.final_price}`);
+                            } else if (statusData.status === "no_answer") {
+                                addLog("CALL", `${statusData.vendor_name}: call was not picked up.`);
                             } else {
                                 addLog("CALL", `${statusData.vendor_name}: ${statusData.status} (no quote extracted)`);
                             }
+                        } else if (statusData.status === "processing") {
+                            setActiveCalls(prev => prev.map(c => c.id === callId ? { ...c, status: "processing" } : c));
                         } else if (statusData.status === "error") {
                             pendingCallIds.delete(callId);
                             addLog("CALL", `✗ ${statusData.vendor_name}: call error — ${statusData.error}`);
@@ -420,7 +424,7 @@ function AgentRunContent() {
                                 try {
                                     const negStatusRes = await fetch(`/api/calls/${negCallData.conversation_id}/status`);
                                     const negStatusData = await negStatusRes.json();
-                                    if (negStatusData.status === "complete" || negStatusData.status === "declined") {
+                                    if (negStatusData.status === "complete" || negStatusData.status === "declined" || negStatusData.status === "no_answer") {
                                         negotiationCallComplete = true;
                                         const finalQuote = negStatusData.quote;
                                         const finalPrice = finalQuote?.final_price || finalQuote?.quote?.total || 0;

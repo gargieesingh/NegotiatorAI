@@ -6,7 +6,7 @@ import { WaveformAnim } from '@/components/calls/WaveformAnim';
 import type { CompanyStyle, Quote } from '@/lib/types';
 import { formatCurrency } from '@/lib/utils';
 
-type CallCardStatus = 'pending' | 'calling' | 'complete' | 'declined' | 'error';
+type CallCardStatus = 'pending' | 'calling' | 'processing' | 'complete' | 'declined' | 'no_answer' | 'error';
 interface CallCardProps {
   companyName: string;
   companyStyle: CompanyStyle;
@@ -19,16 +19,20 @@ interface CallCardProps {
 const colors: Record<CallCardStatus, string> = {
   pending: 'opacity-85',
   calling: 'shadow-[0_0_1.5rem_0_rgba(51,92,255,0.1)] border-blue-300',
+  processing: 'border-blue-200 bg-blue-50/20',
   complete: 'border-emerald-200 bg-white-0',
   declined: 'border-amber-200 bg-amber-50/20',
+  no_answer: 'border-amber-200 bg-amber-50/20',
   error: 'border-red-200 bg-red-50/20',
 };
 
 const labels: Record<CallCardStatus, string> = {
   pending: 'Queued',
   calling: 'Calling...',
+  processing: 'Processing quote',
   complete: 'Quote received',
   declined: 'Documented decline',
+  no_answer: 'Not picked up',
   error: 'Setup required',
 };
 
@@ -80,6 +84,21 @@ export function CallCard({ companyName, companyStyle, status, quote, error, disc
       {status === 'declined' && (
         <div className="mt-6 rounded-xl border border-red-200 bg-red-50/50 p-4 text-sm font-medium text-red-600">
           No quote was received. This outcome is retained as evidence rather than filled with an estimate.
+        </div>
+      )}
+
+      {status === 'processing' && (
+        <div className="mt-6">
+          <WaveformAnim active={false} />
+          <p className="mt-3 text-center text-xs font-medium text-sub-600">
+            Call ended. Waiting for ElevenLabs to deliver the transcript and extract the quote.
+          </p>
+        </div>
+      )}
+
+      {status === 'no_answer' && (
+        <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50/50 p-4 text-sm font-medium text-amber-700">
+          This vendor did not pick up the call. No quote was recorded.
         </div>
       )}
 
