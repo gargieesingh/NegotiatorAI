@@ -39,8 +39,7 @@ export default function ReportPage() {
   if (!ready || !negotiation) {
     return (
       <div className="mx-auto max-w-[1200px] px-6 py-10">
-        <StepProgress current={4} />
-        <section className="mt-12 rounded-2xl border border-amber-200 bg-amber-50/40 p-8 shadow-[0_0_1.25rem_0_rgba(0,0,0,0.03)]">
+        <section className="rounded-2xl border border-amber-200 bg-amber-50/40 p-8 shadow-[0_0_1.25rem_0_rgba(0,0,0,0.03)]">
           <div className="flex items-center gap-3 text-amber-700">
             <FileWarning size={24} />
             <h1 className="text-2xl font-bold text-strong-950">Your evidence-backed quote report</h1>
@@ -73,15 +72,11 @@ export default function ReportPage() {
 
   return (
     <div className="mx-auto max-w-[1200px] px-6 py-10">
-      <StepProgress current={4} />
       
       {/* Header */}
-      <div className="mt-10 flex flex-wrap items-end justify-between gap-4">
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-blue-600">
-            Module 04 / Executive Report
-          </p>
-          <h1 className="mt-3 text-4xl font-bold tracking-[-0.03em] text-strong-950">
+          <h1 className="text-4xl font-bold tracking-[-0.03em] text-strong-950">
             Executive Evidence & Savings Report
           </h1>
           <p className="mt-2 text-sm text-sub-600">
