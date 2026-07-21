@@ -60,9 +60,9 @@ There is no standalone metric-calculation service despite the UI step being name
 
 For a general job such as the MacBook request:
 
-1. Gemini 2.5 Flash classifies the request and produces a vertical configuration, including expected quote line-item keys.
+1. Cerebras classifies the request and produces a vertical configuration, including expected quote line-item keys.
 2. ElevenLabs supplies the post-call transcript.
-3. `normalizeGenericQuote` in `src/lib/genericQuote.ts` asks Gemini to return strict JSON. It may use only amounts explicitly stated in the transcript and must cite each amount's transcript-turn index.
+3. `normalizeGenericQuote` in `src/lib/genericQuote.ts` asks Cerebras to return strict JSON. It may use only amounts explicitly stated in the transcript and must cite each amount's transcript-turn index.
 4. Line items not allowed by the job configuration, non-numeric amounts, and invalid evidence indexes are discarded.
 5. `total` is taken from the extracted `total` item, or falls back to `base_price`; `final_price` is set to that value. Binding status, validity, inclusions, exclusions, and red flags are also retained.
 

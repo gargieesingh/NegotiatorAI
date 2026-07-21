@@ -1,6 +1,6 @@
 import type { ConversationTurn, Quote } from '@/lib/types';
 import type { GeneralJobSpec } from '@/lib/verticals';
-import { generateGeminiJson, hasGemini } from '@/lib/gemini';
+import { cerebrasClient, cerebrasModel, hasCerebras } from '@/lib/cerebras';
 
 const quoteSchema = {
   type: 'object', additionalProperties: false, required: ['outcome', 'line_items', 'binding', 'valid_until', 'included_services', 'excluded_services', 'red_flags'],
@@ -15,36 +15,24 @@ const quoteSchema = {
 export async function normalizeGenericQuote(callId: string, companyName: string, job: GeneralJobSpec, transcript: ConversationTurn[]): Promise<Quote> {
   const allowedKeys = job.config.quoteLineItems.map((item) => item.key);
   let normalized: { outcome: Quote['outcome']; line_items: Array<{ key: string; amount: number; evidence_turn: number }>; binding: boolean; valid_until: string; included_services: string[]; excluded_services: string[]; red_flags: string[] };
-  const fallbackNormalization = (reason: string) => {
-    const pricePattern = /(?:all[- ]?in|total|final|quoted?|price|estimate)\D{0,50}(?:₹|rs\.?|inr|\$)?\s*([\d,]+(?:\.\d{1,2})?)/i;
-    const evidenceTurn = transcript.findIndex((turn) => pricePattern.test(turn.text));
-    const totalMatch = evidenceTurn >= 0 ? transcript[evidenceTurn].text.match(pricePattern) : null;
-    const total = totalMatch ? Number(totalMatch[1].replace(/,/g, '')) : 0;
-    return {
-      outcome: total ? 'quote_received' as const : 'callback_commitment' as const,
-      line_items: total ? [{ key: 'total', amount: total, evidence_turn: evidenceTurn }] : [],
-      binding: false,
-      valid_until: '',
-      included_services: [],
-      excluded_services: [],
-      red_flags: [`${reason} Review the transcript before relying on this result.`],
-    };
-  };
-
-  if (hasGemini()) {
-    try {
-      normalized = await generateGeminiJson<typeof normalized>({
-        system: 'Return only a JSON object matching the supplied schema. Never infer an amount or add a fact that is not explicitly present in the transcript.',
-        prompt: `Normalize this vendor call into an evidence-backed quote. Use only amounts explicitly stated in the transcript. Use only these line-item keys: ${JSON.stringify(allowedKeys)}. For each line item, evidence_turn must be the zero-based transcript index that proves it.\n\nCONFIRMED JOB: ${JSON.stringify(job.data)}\n\nTRANSCRIPT: ${JSON.stringify(transcript.map((turn, index) => ({ index, speaker: turn.speaker, text: turn.text })))} `,
-        schema: quoteSchema,
-      });
-    } catch (error) {
-      const status = typeof error === 'object' && error !== null && 'status' in error ? String(error.status) : '';
-      console.error('Gemini quote normalization failed; using transcript fallback', error);
-      normalized = fallbackNormalization(`Gemini quote normalization is unavailable${status ? ` (HTTP ${status})` : ''}.`);
-    }
+  if (hasCerebras()) {
+    const response = await cerebrasClient().chat.completions.create({
+      model: cerebrasModel(),
+      max_tokens: 1400,
+      reasoning_effort: 'low',
+      messages: [
+        { role: 'developer', content: 'Return only a JSON object matching the supplied schema. Never infer an amount or add a fact that is not explicitly present in the transcript.' },
+        { role: 'user', content: `Normalize this vendor call into an evidence-backed quote. Use only amounts explicitly stated in the transcript. Use only these line-item keys: ${JSON.stringify(allowedKeys)}. For each line item, evidence_turn must be the zero-based transcript index that proves it.\n\nCONFIRMED JOB: ${JSON.stringify(job.data)}\n\nTRANSCRIPT: ${JSON.stringify(transcript.map((turn, index) => ({ index, speaker: turn.speaker, text: turn.text })))} ` },
+      ],
+      response_format: { type: 'json_schema', json_schema: { name: 'normalized_quote', strict: true, schema: quoteSchema } },
+    });
+    const content = response.choices[0]?.message.content;
+    if (!content) throw new Error('Cerebras returned no structured quote content.');
+    normalized = JSON.parse(content);
   } else {
-    normalized = fallbackNormalization('Structured Gemini quote normalization is not configured.');
+    const totalMatch = transcript.map((turn) => turn.text).join(' ').match(/(?:all[- ]?in|total|estimate)\D{0,30}\$?([\d,]+(?:\.\d{1,2})?)/i);
+    const total = totalMatch ? Number(totalMatch[1].replace(/,/g, '')) : 0;
+    normalized = { outcome: total ? 'quote_received' : 'callback_commitment', line_items: total ? [{ key: 'total', amount: total, evidence_turn: 0 }] : [], binding: false, valid_until: '', included_services: [], excluded_services: [], red_flags: ['Structured Cerebras quote normalization is not configured; review the transcript before relying on this result.'] };
   }
   const safeItems = normalized.line_items.filter((item) => allowedKeys.includes(item.key) && Number.isFinite(item.amount) && item.evidence_turn >= 0 && item.evidence_turn < transcript.length);
   const amount = (key: string) => safeItems.find((item) => item.key === key)?.amount ?? 0;
