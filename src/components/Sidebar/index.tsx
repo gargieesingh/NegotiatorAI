@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { Sparkles } from "lucide-react";
 import Icon from "@/components/Icon";
 import MyWorkspace from "./MyWorkspace";
-import User from "./User";
 
 type Props = {
     visible: boolean;
@@ -109,8 +108,6 @@ const Sidebar = ({ visible, onClose, onClickNewChat }: Props) => {
                     </div>
                 </div>
             </div>
-
-            <User />
         </div>
     );
 };
