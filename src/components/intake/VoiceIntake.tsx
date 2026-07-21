@@ -101,18 +101,34 @@ export function VoiceIntake({ onSpecReceived }: VoiceIntakeProps) {
 
   const active = conversation.status === 'connected';
   return (
-    <section className="border border-negotiator-border bg-negotiator-surface p-6">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-negotiator-accent">Voice interview</p>
-      <h2 className="mt-2 text-2xl font-semibold">Talk through your wedding</h2>
-      <p className="mt-2 text-sm leading-relaxed text-slate-400">We’ll collect dates, events, coverage, deliverables, and logistics so every photographer quotes the same brief.</p>
-      <div className="mt-8 flex flex-col items-center border-y border-negotiator-border py-8">
-        <button onClick={active ? () => void conversation.endSession() : () => void start()} className={`grid h-16 w-16 place-items-center border transition ${active ? 'animate-pulse-slow border-negotiator-danger bg-negotiator-danger/10 text-negotiator-danger' : 'border-negotiator-accent bg-negotiator-accent/10 text-negotiator-accent hover:bg-negotiator-accent hover:text-white'}`} aria-label={active ? 'End voice intake' : 'Start voice intake'}>
+    <section className="rounded-2xl border border-stroke-soft-200 bg-white-0 p-6 shadow-[0_0_1.25rem_0_rgba(0,0,0,0.03)]">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-blue-500">Voice interview</p>
+      <h2 className="mt-2 text-2xl font-semibold text-strong-950">Talk through your wedding</h2>
+      <p className="mt-2 text-sm leading-relaxed text-sub-600">We’ll collect dates, events, coverage, deliverables, and logistics so every photographer quotes the same brief.</p>
+      <div className="mt-8 flex flex-col items-center border-y border-stroke-soft-200 py-8">
+        <button
+          onClick={active ? () => void conversation.endSession() : () => void start()}
+          className={`grid h-16 w-16 place-items-center rounded-full border transition-all ${
+            active
+              ? 'animate-pulse-slow border-red-500 bg-red-50 text-red-600 shadow-md'
+              : 'border-stroke-soft-200 bg-weak-50 text-strong-950 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600'
+          }`}
+          aria-label={active ? 'End voice intake' : 'Start voice intake'}
+        >
           {active ? <Square size={22} fill="currentColor" /> : <Mic size={24} />}
         </button>
-        <p className="mt-4 text-xs font-semibold uppercase tracking-[0.1em] text-slate-400">{active ? 'Listening live' : 'Start voice intake'}</p>
+        <p className="mt-4 text-xs font-semibold uppercase tracking-[0.1em] text-sub-600">{active ? 'Listening live' : 'Start voice intake'}</p>
       </div>
-      <div className="mt-5 min-h-20 space-y-2 text-sm text-slate-400">
-        {transcript.length === 0 ? <p>Live conversation transcript will appear here.</p> : transcript.map((line, index) => <p key={`${line}-${index}`} className="border-l border-negotiator-accent pl-3">{line}</p>)}
+      <div className="mt-5 min-h-20 space-y-2 text-sm text-sub-600">
+        {transcript.length === 0 ? (
+          <p className="text-sub-600">Live conversation transcript will appear here.</p>
+        ) : (
+          transcript.map((line, index) => (
+            <p key={`${line}-${index}`} className="border-l-2 border-blue-500 pl-3 text-strong-950">
+              {line}
+            </p>
+          ))
+        )}
       </div>
     </section>
   );

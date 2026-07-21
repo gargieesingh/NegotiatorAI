@@ -52,5 +52,86 @@ export default function IntakePage() {
     router.push('/discover');
   };
 
-  return <div className="mx-auto max-w-[1200px] px-6 py-10"><StepProgress current={1} /><div className="mt-10"><p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-negotiator-accent">Module 01 / The Estimator</p><h1 className="mt-3 text-4xl font-bold tracking-[-0.03em]">Build a quote-ready brief for any phone-priced service.</h1><p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-400">Describe what you need. The system proposes a vertical-specific intake structure, then you confirm one immutable brief before a vendor is contacted.</p></div>{!config ? <section className="mt-8 border border-negotiator-border bg-negotiator-surface p-6"><p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-negotiator-accent">First, identify your market</p><h2 className="mt-2 text-2xl font-semibold">What would you like us to price-shop?</h2><textarea value={description} onChange={(event) => setDescription(event.target.value)} placeholder="Example: I need quotes to move a two-bedroom apartment from Rock Hill to Charlotte next month." className="mt-5 min-h-28 w-full border border-negotiator-border bg-negotiator-surface-2 p-4 text-sm outline-none focus:border-negotiator-accent" /><div className="mt-3 flex flex-wrap gap-2">{examples.map((example) => <button key={example} onClick={() => setDescription(example)} className="border border-negotiator-border px-3 py-2 text-xs text-slate-400 hover:border-negotiator-accent hover:text-slate-100">{example}</button>)}</div><button onClick={() => void identify()} disabled={loading} className="mt-5 inline-flex items-center gap-2 bg-negotiator-accent px-5 py-3 text-sm font-semibold disabled:opacity-60">{loading ? <LoaderCircle className="animate-spin" size={16} /> : <Sparkles size={16} />}Identify service and build intake</button></section> : <><section className="mt-8 border border-negotiator-success/40 bg-negotiator-success/5 p-5"><p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-negotiator-success">Proposed configuration</p><h2 className="mt-2 text-xl font-semibold">{config.displayName}</h2><p className="mt-2 text-sm text-slate-400">{config.summary} {classification && `(${Math.round(classification.confidence * 100)}% confidence — ${classification.reason})`}</p><button onClick={() => { setConfig(undefined); setSpec(undefined); setGenericValues(undefined); }} className="mt-3 text-xs text-negotiator-accent">Choose a different service</button></section>{config.id === 'wedding_photography' ? <><div className="mt-8 grid gap-6 lg:grid-cols-5"><div className="lg:col-span-3"><VoiceIntake onSpecReceived={receiveSpec} /></div><div className="lg:col-span-2"><DocumentUpload onSpecReceived={receiveSpec} /></div></div>{spec && <JobSpecConfirm spec={spec} onConfirm={confirmWedding} />}</> : <><GenericVoiceIntake config={config} onSpecReceived={receiveGenericValues} /><GenericDocumentUpload config={config} onSpecReceived={receiveGenericValues} /><GenericBriefForm config={config} initialValues={genericValues} onConfirm={confirmGeneric} /></>}</>}</div>;
+  return (
+    <div className="mx-auto max-w-[1200px] px-6 py-10">
+      <StepProgress current={1} />
+      <div className="mt-10">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-blue-500">Module 01 / The Estimator</p>
+        <h1 className="mt-3 text-4xl font-bold tracking-[-0.03em] text-strong-950">Build a quote-ready brief for any phone-priced service.</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-sub-600">
+          Describe what you need. The system proposes a vertical-specific intake structure, then you confirm one immutable brief before a vendor is contacted.
+        </p>
+      </div>
+      {!config ? (
+        <section className="mt-8 rounded-2xl border border-stroke-soft-200 bg-white-0 p-6 shadow-[0_0_1.25rem_0_rgba(0,0,0,0.03)]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-blue-500">First, identify your market</p>
+          <h2 className="mt-2 text-2xl font-semibold text-strong-950">What would you like us to price-shop?</h2>
+          <textarea
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            placeholder="Example: I need quotes to move a two-bedroom apartment from Rock Hill to Charlotte next month."
+            className="mt-5 min-h-28 w-full rounded-xl border border-stroke-soft-200 bg-white-0 p-4 text-sm text-strong-950 placeholder:text-sub-600 outline-none transition-colors focus:border-blue-500"
+          />
+          <div className="mt-3 flex flex-wrap gap-2">
+            {examples.map((example) => (
+              <button
+                key={example}
+                onClick={() => setDescription(example)}
+                className="rounded-xl border border-stroke-soft-200 bg-white-0 px-3 py-2 text-xs text-sub-600 transition-colors hover:border-strong-950 hover:text-strong-950"
+              >
+                {example}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={() => void identify()}
+            disabled={loading}
+            className="mt-5 inline-flex items-center gap-2 rounded-xl bg-strong-950 px-5 py-3 text-sm font-semibold text-white-0 transition-colors hover:bg-strong-950/90 disabled:opacity-60"
+          >
+            {loading ? <LoaderCircle className="animate-spin" size={16} /> : <Sparkles size={16} />}
+            Identify service and build intake
+          </button>
+        </section>
+      ) : (
+        <>
+          <section className="mt-8 rounded-2xl border border-stroke-soft-200 bg-white-0 p-5 shadow-[0_0_1.25rem_0_rgba(0,0,0,0.03)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-emerald-600">Proposed configuration</p>
+            <h2 className="mt-2 text-xl font-semibold text-strong-950">{config.displayName}</h2>
+            <p className="mt-2 text-sm text-sub-600">
+              {config.summary} {classification && `(${Math.round(classification.confidence * 100)}% confidence — ${classification.reason})`}
+            </p>
+            <button
+              onClick={() => {
+                setConfig(undefined);
+                setSpec(undefined);
+                setGenericValues(undefined);
+              }}
+              className="mt-3 text-xs font-semibold text-blue-500 transition-colors hover:underline"
+            >
+              Choose a different service
+            </button>
+          </section>
+          {config.id === 'wedding_photography' ? (
+            <>
+              <div className="mt-8 grid gap-6 lg:grid-cols-5">
+                <div className="lg:col-span-3">
+                  <VoiceIntake onSpecReceived={receiveSpec} />
+                </div>
+                <div className="lg:col-span-2">
+                  <DocumentUpload onSpecReceived={receiveSpec} />
+                </div>
+              </div>
+              {spec && <JobSpecConfirm spec={spec} onConfirm={confirmWedding} />}
+            </>
+          ) : (
+            <>
+              <GenericVoiceIntake config={config} onSpecReceived={receiveGenericValues} />
+              <GenericDocumentUpload config={config} onSpecReceived={receiveGenericValues} />
+              <GenericBriefForm config={config} initialValues={genericValues} onConfirm={confirmGeneric} />
+            </>
+          )}
+        </>
+      )}
+    </div>
+  );
 }

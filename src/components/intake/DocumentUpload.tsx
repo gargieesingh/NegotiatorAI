@@ -43,14 +43,18 @@ export function DocumentUpload({ onSpecReceived }: DocumentUploadProps) {
   };
 
   return (
-    <section className="border border-negotiator-border bg-negotiator-surface p-6">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">Or document intake</p>
-      <h2 className="mt-2 text-2xl font-semibold">Upload an existing quote</h2>
-      <p className="mt-2 text-sm leading-relaxed text-slate-400">We’ll extract the same wedding brief from an invitation or an existing photographer quote.</p>
-      <label onDrop={onDrop} onDragOver={(event) => event.preventDefault()} className="mt-8 flex min-h-44 cursor-pointer flex-col items-center justify-center border border-dashed border-negotiator-border bg-negotiator-surface-2 px-5 text-center transition hover:border-negotiator-accent">
-        {loading ? <LoaderCircle className="animate-spin text-negotiator-accent" size={28} /> : <FileUp className="text-negotiator-accent" size={28} />}
-        <span className="mt-4 text-sm font-semibold">{loading ? 'Parsing document...' : fileName ?? 'Drop a file here or choose one'}</span>
-        <span className="mt-2 text-xs text-slate-500">Wedding invitation or photographer quote: PDF or PNG</span>
+    <section className="rounded-2xl border border-stroke-soft-200 bg-white-0 p-6 shadow-[0_0_1.25rem_0_rgba(0,0,0,0.03)]">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-blue-500">Or document intake</p>
+      <h2 className="mt-2 text-2xl font-semibold text-strong-950">Upload an existing quote</h2>
+      <p className="mt-2 text-sm leading-relaxed text-sub-600">We’ll extract the same wedding brief from an invitation or an existing photographer quote.</p>
+      <label
+        onDrop={onDrop}
+        onDragOver={(event) => event.preventDefault()}
+        className="mt-8 flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-stroke-soft-200 bg-weak-50 px-5 text-center transition-all hover:border-blue-500 hover:bg-blue-50/30"
+      >
+        {loading ? <LoaderCircle className="animate-spin text-blue-500" size={28} /> : <FileUp className="text-blue-500" size={28} />}
+        <span className="mt-4 text-sm font-semibold text-strong-950">{loading ? 'Parsing document...' : fileName ?? 'Drop a file here or choose one'}</span>
+        <span className="mt-2 text-xs text-sub-600">Wedding invitation or photographer quote: PDF or PNG</span>
         <input className="sr-only" type="file" accept="application/pdf,image/png" onChange={onChange} disabled={loading} />
       </label>
     </section>

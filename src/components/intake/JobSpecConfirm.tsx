@@ -51,5 +51,50 @@ export function JobSpecConfirm({ spec, onConfirm }: JobSpecConfirmProps) {
     const brief = { vertical: 'wedding_photography' as const, wedding_date: draft.wedding_date ?? '', venue: draft.venue ?? { name: '', city: '' }, events: draft.events ?? [], coverage_type: draft.coverage_type ?? 'photography_only' as const, drone_coverage_required: draft.drone_coverage_required ?? false, albums_required: draft.albums_required ?? false, special_requests: draft.special_requests ?? [] };
     onConfirm({ ...brief, id: generateId(), created_at: new Date().toISOString(), intake_method: draft.intake_method ?? 'voice', confirmed_by_user: true, confirmed_at: new Date().toISOString(), spec_hash: createSpecHash(brief) });
   };
-  return <section className="mt-8 border border-negotiator-accent bg-negotiator-surface p-6"><div className="flex flex-wrap items-end justify-between gap-4"><div><p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-negotiator-accent">Current confirmed wedding brief</p><h2 className="mt-2 text-2xl font-semibold">Confirm your photography brief</h2></div><p className={`text-xs ${missing ? 'text-negotiator-warning' : 'text-negotiator-success'}`}>{missing ? `${missing} fields need attention` : 'Brief ready for quotes'}</p></div><div className="mt-6 grid gap-x-8 gap-y-4 md:grid-cols-2">{fields.map(({ key, label }) => <div key={key} className="border-b border-negotiator-border pb-3"><div className="flex items-center justify-between"><p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">{label}</p><button onClick={() => setEditing(key)} className="text-slate-500 hover:text-negotiator-accent" aria-label={`Edit ${label}`}><Pencil size={13} /></button></div>{editing === key ? <input autoFocus className="mt-2 w-full border border-negotiator-accent bg-negotiator-surface-2 p-2 text-sm outline-none" defaultValue={displayValue(draft[key], key)} onBlur={(event) => { updateText(key, event.target.value); setEditing(undefined); }} onKeyDown={(event) => { if (event.key === 'Enter') event.currentTarget.blur(); }} /> : <p className={`mt-1 text-sm ${displayValue(draft[key], key) === 'Missing' ? 'text-negotiator-warning' : 'text-slate-200'}`}>{displayValue(draft[key], key)}</p>}</div>)}</div><button onClick={confirm} className="mt-8 inline-flex items-center gap-2 bg-negotiator-success px-5 py-3 text-sm font-semibold text-negotiator-bg hover:bg-emerald-400">Confirm and start calling <ArrowRight size={16} /></button></section>;
+  return (
+    <section className="mt-8 rounded-2xl border border-stroke-soft-200 bg-white-0 p-6 shadow-[0_0_1.25rem_0_rgba(0,0,0,0.03)]">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-blue-500">Current confirmed wedding brief</p>
+          <h2 className="mt-2 text-2xl font-semibold text-strong-950">Confirm your photography brief</h2>
+        </div>
+        <p className={`text-xs ${missing ? 'font-medium text-amber-600' : 'font-medium text-emerald-600'}`}>
+          {missing ? `${missing} fields need attention` : 'Brief ready for quotes'}
+        </p>
+      </div>
+      <div className="mt-6 grid gap-x-8 gap-y-4 md:grid-cols-2">
+        {fields.map(({ key, label }) => (
+          <div key={key} className="border-b border-stroke-soft-200 pb-3">
+            <div className="flex items-center justify-between">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-sub-600">{label}</p>
+              <button onClick={() => setEditing(key)} className="text-sub-600 transition-colors hover:text-strong-950" aria-label={`Edit ${label}`}>
+                <Pencil size={13} />
+              </button>
+            </div>
+            {editing === key ? (
+              <input
+                autoFocus
+                className="mt-2 w-full rounded-xl border border-stroke-soft-200 bg-white-0 p-2 text-sm text-strong-950 outline-none focus:border-blue-500"
+                defaultValue={displayValue(draft[key], key)}
+                onBlur={(event) => {
+                  updateText(key, event.target.value);
+                  setEditing(undefined);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') event.currentTarget.blur();
+                }}
+              />
+            ) : (
+              <p className={`mt-1 text-sm ${displayValue(draft[key], key) === 'Missing' ? 'font-medium text-amber-600' : 'text-strong-950'}`}>
+                {displayValue(draft[key], key)}
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+      <button onClick={confirm} className="mt-8 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white-0 transition-colors hover:bg-emerald-700">
+        Confirm and start calling <ArrowRight size={16} />
+      </button>
+    </section>
+  );
 }

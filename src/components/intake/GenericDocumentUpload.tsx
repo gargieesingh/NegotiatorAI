@@ -25,5 +25,26 @@ export function GenericDocumentUpload({ config, onSpecReceived }: GenericDocumen
     } catch (error) { toast.error(error instanceof Error ? error.message : 'Could not parse the document.'); }
     finally { setLoading(false); if (input.current) input.current.value = ''; }
   };
-  return <section className="mt-8 border border-negotiator-border bg-negotiator-surface p-6"><p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-negotiator-accent">Document intake</p><h2 className="mt-2 text-xl font-semibold">Upload a relevant PDF or PNG</h2><p className="mt-2 text-sm text-slate-400">Upload an existing quote, bill, scope, estimate, invitation, inventory, or other supporting document. It maps into the same confirmed brief.</p><input ref={input} type="file" accept="application/pdf,image/png" className="hidden" onChange={(event) => void upload(event.target.files?.[0])} /><button disabled={loading} onClick={() => input.current?.click()} className="mt-5 inline-flex items-center gap-2 border border-negotiator-accent px-4 py-3 text-sm font-semibold text-negotiator-accent disabled:opacity-60">{loading ? <LoaderCircle size={16} className="animate-spin" /> : <Upload size={16} />}{loading ? 'Extracting details…' : 'Upload PDF or PNG'}</button><p className="mt-4 inline-flex items-center gap-2 text-xs text-slate-500"><FileText size={14} />The source document is evidence; you still confirm every field.</p></section>;
+  return (
+    <section className="mt-8 rounded-2xl border border-stroke-soft-200 bg-white-0 p-6 shadow-[0_0_1.25rem_0_rgba(0,0,0,0.03)]">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-blue-500">Document intake</p>
+      <h2 className="mt-2 text-xl font-semibold text-strong-950">Upload a relevant PDF or PNG</h2>
+      <p className="mt-2 text-sm text-sub-600">
+        Upload an existing quote, bill, scope, estimate, invitation, inventory, or other supporting document. It maps into the same confirmed brief.
+      </p>
+      <input ref={input} type="file" accept="application/pdf,image/png" className="hidden" onChange={(event) => void upload(event.target.files?.[0])} />
+      <button
+        disabled={loading}
+        onClick={() => input.current?.click()}
+        className="mt-5 inline-flex items-center gap-2 rounded-xl border border-stroke-soft-200 bg-white-0 px-4 py-3 text-sm font-semibold text-strong-950 transition-colors hover:border-strong-950 hover:bg-weak-50 disabled:opacity-60"
+      >
+        {loading ? <LoaderCircle size={16} className="animate-spin text-blue-500" /> : <Upload size={16} className="text-blue-500" />}
+        {loading ? 'Extracting details…' : 'Upload PDF or PNG'}
+      </button>
+      <p className="mt-4 inline-flex items-center gap-2 text-xs text-sub-600">
+        <FileText size={14} className="text-sub-600" />
+        The source document is evidence; you still confirm every field.
+      </p>
+    </section>
+  );
 }
