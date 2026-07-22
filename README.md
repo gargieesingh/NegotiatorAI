@@ -5,7 +5,8 @@
 > **Autonomous AI Procurement & Price Negotiation Agent** Built for the OpenAI Hackathon.
 >
 > Negotiator AI delegates your vendor outreach, price comparisons, and rate negotiations to AI. Describe your service scope or attach a quote; our autonomous agent discovers local service providers via Google Places, places real conversational phone calls with ElevenLabs AI, extracts itemized pricing, and negotiates binding deals using AI leverage strategies.
-
+> 
+>[Visit Site](https://negotiator-ai-pied.vercel.app/report)
 ---
 
 ## The problem
